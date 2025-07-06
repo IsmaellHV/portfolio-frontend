@@ -1,0 +1,154 @@
+@use 'sass:color';
+$color-primary: #64ffda;
+
+$color-background: #0a192f;
+$color-background-dark: #020c1b;
+$color-background-light: #112240;
+$color-background-darkest: #01060e;
+$color-background-lightest: #233554;
+
+$color-dark: #000;
+$color-light: #a8b2d1;
+$color-gray: #7f8c8d;
+
+$color-black: black;
+$color-white: white;
+$color-red: #ff5252;
+$color-pink: #f57dff;
+$color-orange: #fa8900;
+$color-yellow: #ffb300;
+$color-cyan: #57cbff;
+$color-blue: #2196f3;
+$color-violet: #673ab7;
+
+$color-primary-50: #eefffa;
+$color-primary-100: #c5fff0;
+$color-primary-200: #8bffe4;
+$color-primary-300: #64ffda;
+$color-primary-400: #14edc0;
+$color-primary-500: #00d1a8;
+$color-primary-600: #00a88b;
+$color-primary-700: #008570;
+$color-primary-800: #056a5b;
+$color-primary-900: #0a574c;
+$color-primary-950: #003530;
+
+$color-light-50: #f4f6f9;
+$color-light-100: #eaeff5;
+$color-light-200: #d9e0ec;
+$color-light-300: #c2cbdf;
+$color-light-400: #a8b2d1;
+$color-light-500: #929ac2;
+$color-light-600: #7a7fb1;
+$color-light-700: #686c9a;
+$color-light-800: #565a7d;
+$color-light-900: #494c66;
+$color-light-950: #2b2c3b;
+
+$color-dark-50: #f6f6f6;
+$color-dark-100: #e7e7e7;
+$color-dark-200: #d1d1d1;
+$color-dark-300: #b0b0b0;
+$color-dark-400: #888888;
+$color-dark-500: #6d6d6d;
+$color-dark-600: #5d5d5d;
+$color-dark-700: #4f4f4f;
+$color-dark-800: #454545;
+$color-dark-900: #3d3d3d;
+$color-dark-950: #000000;
+
+$color-gray-50: #f7f8f8;
+$color-gray-100: #f1f2f2;
+$color-gray-200: #e3e7e7;
+$color-gray-300: #cdd4d4;
+$color-gray-400: #aeb8b8;
+$color-gray-500: #93a1a1;
+$color-gray-600: #7f8c8d;
+$color-gray-700: #647172;
+$color-gray-800: #555e5f;
+$color-gray-900: #495152;
+$color-gray-950: #292d2e;
+
+[data-theme='dark'] {
+  --color-primary: #{$color-primary};
+
+  --color-background: #{$color-background};
+  --color-background-dark: #{$color-background-dark};
+  --color-background-light: #{$color-background-light};
+  --color-background-darkest: #{$color-background-darkest};
+  --color-background-lightest: #{$color-background-lightest};
+
+  --color-light: #{$color-light};
+  --color-dark: #{$color-dark};
+  --color-gray: #{$color-gray};
+
+  --color-black: #{$color-black};
+  --color-white: #{$color-white};
+  --color-red: #{$color-red};
+  --color-pink: #{$color-pink};
+  --color-orange: #{$color-orange};
+  --color-yellow: #{$color-yellow};
+  --color-cyan: #{$color-cyan};
+  --color-blue: #{$color-blue};
+  --color-violet: #{$color-violet};
+
+  --rs-primary-50: #{$color-primary-50};
+  --rs-primary-100: #{$color-primary-100};
+  --rs-primary-200: #{$color-primary-200};
+  --rs-primary-300: #{$color-primary-300};
+  --rs-primary-400: #{$color-primary-400};
+  --rs-primary-500: #{$color-primary-500};
+  --rs-primary-600: #{$color-primary-600};
+  --rs-primary-700: #{$color-primary-700};
+  --rs-primary-800: #{$color-primary-800};
+  --rs-primary-900: #{$color-primary-900};
+  --rs-primary-950: #{$color-primary-950};
+
+  --color-primary-50: #{$color-primary-50};
+  --color-primary-100: #{$color-primary-100};
+  --color-primary-200: #{$color-primary-200};
+  --color-primary-300: #{$color-primary-300};
+  --color-primary-400: #{$color-primary-400};
+  --color-primary-500: #{$color-primary-500};
+  --color-primary-600: #{$color-primary-600};
+  --color-primary-700: #{$color-primary-700};
+  --color-primary-800: #{$color-primary-800};
+  --color-primary-900: #{$color-primary-900};
+  --color-primary-950: #{$color-primary-950};
+
+  --color-light-50: #{$color-light-50};
+  --color-light-100: #{$color-light-100};
+  --color-light-200: #{$color-light-200};
+  --color-light-300: #{$color-light-300};
+  --color-light-400: #{$color-light-400};
+  --color-light-500: #{$color-light-500};
+  --color-light-600: #{$color-light-600};
+  --color-light-700: #{$color-light-700};
+  --color-light-800: #{$color-light-800};
+  --color-light-900: #{$color-light-900};
+  --color-light-950: #{$color-light-950};
+
+  --color-dark-50: #{$color-dark-50};
+  --color-dark-100: #{$color-dark-100};
+  --color-dark-200: #{$color-dark-200};
+  --color-dark-300: #{$color-dark-300};
+  --color-dark-400: #{$color-dark-400};
+  --color-dark-500: #{$color-dark-500};
+  --color-dark-600: #{$color-dark-600};
+  --color-dark-700: #{$color-dark-700};
+  --color-dark-800: #{$color-dark-800};
+  --color-dark-900: #{$color-dark-900};
+  --color-dark-950: #{$color-dark-950};
+
+  --color-gray-50: #{$color-gray-50};
+  --color-gray-100: #{$color-gray-100};
+  --color-gray-200: #{$color-gray-200};
+  --color-gray-300: #{$color-gray-300};
+  --color-gray-400: #{$color-gray-400};
+  --color-gray-500: #{$color-gray-500};
+  --color-gray-600: #{$color-gray-600};
+  --color-gray-700: #{$color-gray-700};
+  --color-gray-800: #{$color-gray-800};
+  --color-gray-900: #{$color-gray-900};
+  --color-gray-950: #{$color-gray-950};
+}

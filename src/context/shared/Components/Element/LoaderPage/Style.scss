@@ -1,0 +1,122 @@
+.loaderPage {
+  // transition: opacity 1s ease-in-out;
+
+  .svg-logo > svg {
+    stroke: var(--color-primary-300);
+    stroke-dasharray: 290;
+    stroke-dashoffset: 0;
+    animation: drawHexagonUnidirectional 4s linear infinite;
+  }
+
+  .svg-logo > svg > text {
+    fill: var(--color-primary-300);
+    stroke: var(--color-primary-300);
+    opacity: 0;
+    animation: fadeInLetter 1s forwards 1.5s;
+  }
+
+  .loader-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: var(--rs-bg-backdrop);
+    backdrop-filter: blur(1px);
+    z-index: 101;
+    transition:
+      opacity 1 ease-out,
+      transform 1 ease-out,
+      filter 1 ease-out;
+  }
+
+  .loading-text {
+    z-index: 101;
+    min-height: 21px;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1rem;
+    background: linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-light-100) 50%, var(--color-primary-300) 100%);
+    background-clip: text;
+    mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+    color: transparent;
+    animation: revelar 3s infinite;
+    mask-size: 300%;
+  }
+
+  @keyframes drawHexagon {
+    0%,
+    100% {
+      stroke-dashoffset: 290;
+    }
+
+    50% {
+      stroke-dashoffset: 2;
+    }
+  }
+
+  @keyframes drawHexagonContinuous {
+    0%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+
+    50% {
+      stroke-dashoffset: 290;
+    }
+  }
+
+  @keyframes drawHexagonUnidirectional {
+    from {
+      stroke-dashoffset: 290;
+    }
+
+    to {
+      stroke-dashoffset: -290;
+    }
+  }
+
+  @keyframes fadeInLetter {
+    0%,
+    100% {
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes flickerAnimation {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes revelar {
+    from {
+      mask-position: 150%;
+      -webkit-mask-position: 150%;
+    }
+    to {
+      mask-position: 0%;
+      -webkit-mask-position: 0%;
+    }
+  }
+}
+
+.loaderPage.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-out;
+}

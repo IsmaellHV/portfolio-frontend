@@ -1,0 +1,118 @@
+.inspireHub-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8.5vh;
+  height: 91.5vh;
+  background-color: var(--secondary-color);
+
+  .icon-header {
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease-out;
+
+    &:hover > svg {
+      stroke: var(--color-primary-500);
+    }
+
+    &:hover > svg > text {
+      fill: var(--color-primary-500);
+      stroke: var(--color-primary-500);
+    }
+  }
+
+  .icon-header > svg {
+    width: 5rem;
+    height: 5rem;
+    position: relative;
+    stroke: var(--color-primary-300);
+    stroke-width: 2px;
+    transition:
+      fill 0.3s ease-out,
+      stroke 0.3s ease-out;
+  }
+
+  .icon-header > svg > text {
+    fill: var(--color-primary-300);
+    stroke: var(--color-primary-300);
+    transition:
+      fill 0.3s ease-out,
+      stroke 0.3s ease-out;
+  }
+
+  .login-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 50vh;
+    text-align: center;
+  }
+
+  /* Para pantallas menores a 992px */
+  @media (max-width: 992px) {
+    .login-box {
+      max-width: 45vh;
+    }
+  }
+
+  /* Para pantallas menores a 768px */
+  @media (max-width: 768px) {
+    .login-box {
+      max-width: 40vh;
+      padding: 1.5rem;
+    }
+    .icon-header > svg {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+  }
+
+  /* Para pantallas menores a 480px */
+  @media (max-width: 480px) {
+    .login-box {
+      max-width: 40vh;
+      padding: 1rem;
+    }
+    .icon-header > svg {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+
+  .login-button {
+    background: var(--primary-color);
+    color: var(--text-color);
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.3s;
+  }
+
+  .register-link {
+    margin-top: 10px;
+    color: var(--text-color);
+  }
+
+  .register-link a {
+    color: var(--color-primary-300);
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+
+  .social-login {
+    margin-top: 1rem;
+  }
+
+  .google-btn,
+  .github-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .recaptcha {
+    margin-top: 15px;
+  }
+}

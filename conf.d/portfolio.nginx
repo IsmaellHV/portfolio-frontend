@@ -1,0 +1,48 @@
+# General
+server {
+  server_name _;
+  root /var/www/html;
+  index index.html index.htm index.nginx-debian.html;
+  location / {
+    try_files $uri $uri/ =404;
+  }
+}
+
+# Redirigir http://ismaelhv.com y http://www.ismaelhv.com a https://ismaelhv.com
+server {
+  listen 80;
+  server_name ismaelhv.com www.ismaelhv.com;
+  return 301 https://ismaelhv.com$request_uri;
+}
+
+# Redirigir https://www.ismaelhv.com a https://ismaelhv.com
+server {
+  listen 443;
+  server_name www.ismaelhv.com;
+  return 301 https://ismaelhv.com$request_uri;
+}
+
+# Configuración del dominio principal ismaelhv.com
+server {
+  listen 443;
+  server_name ismaelhv.com;
+  root /app/portfolio-frontend;
+  index index.html index.htm;
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}
+
+# Redireccionar ihurtadov.com y www.ihurtadov.com hacia https://ismaelhv.com
+server {
+  listen 80;
+  server_name ihurtadov.com www.ihurtadov.com;
+  return 301 https://ismaelhv.com$request_uri;
+}
+
+# Redirección desde HTTPS ihurtadov.com hacia https://ismaelhv.com
+server {
+  listen 443;
+  server_name ihurtadov.com www.ihurtadov.com;
+  return 301 https://ismaelhv.com$request_uri;
+}

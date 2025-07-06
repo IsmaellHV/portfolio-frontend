@@ -1,0 +1,74 @@
+.loaderApp {
+  animation-name: fadeOutAnimation;
+  animation-duration: 2500ms;
+  animation-delay: 2500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  background: var(--color-background-dark);
+
+  .svg-logo,
+  .svg-logo-letter {
+    transform-origin: center;
+  }
+
+  .svg-logo > svg {
+    width: 150px;
+    height: 150px;
+    fill: var(--color-background-dark);
+    stroke: var(--color-primary-300);
+    stroke-dasharray: 290;
+    stroke-dashoffset: 290;
+    animation:
+      drawHexagon 2500ms ease-out forwards,
+      scaleDownAndFadeOut 2500ms ease forwards 2500ms;
+  }
+
+  .svg-logo > svg > text {
+    fill: var(--color-primary-300);
+    stroke: var(--color-primary-300);
+    opacity: 1;
+    animation: scaleDownAndFadeOutLetter 1800ms ease forwards 2500ms;
+  }
+
+  @keyframes drawHexagon {
+    to {
+      stroke-dashoffset: 2;
+    }
+  }
+
+  @keyframes fadeInLetter {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleDownAndFadeOut {
+    to {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+
+  @keyframes scaleDownAndFadeOutLetter {
+    to {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeOutAnimation {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}

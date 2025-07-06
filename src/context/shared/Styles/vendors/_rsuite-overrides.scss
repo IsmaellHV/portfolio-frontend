@@ -1,0 +1,209 @@
+:root {
+  --rs-text-link: var(--color-primary-300);
+  --rs-text-link-hover: var(--color-primary-400);
+  --rs-text-link-active: var(--color-primary-500);
+
+  --rs-navs-selected: var(--color-primary-300);
+
+  --rs-text-link: var(--color-primary-300);
+  --rs-text-link-hover: var(--color-primary-400);
+  --rs-text-link-active: var(--color-primary-500);
+  --rs-navs-selected: var(--color-primary-300);
+  --rs-btn-ghost-border: var(--rs-primary-300);
+  --rs-btn-ghost-text: var(--rs-primary-300);
+  --rs-btn-ghost-hover-border: var(--rs-primary-400);
+  --rs-btn-ghost-hover-text: var(--rs-primary-400);
+  --rs-btn-ghost-active-border: var(--rs-primary-500);
+  --rs-btn-ghost-active-text: var(--rs-primary-500);
+}
+
+//BUTTON
+.rs-btn-subtle {
+  background-color: transparent;
+  border: none;
+  color: var(--color-primary);
+}
+
+.rs-btn-subtle:focus,
+.rs-btn-subtle:hover {
+  background-color: transparent;
+  color: var(--color-red);
+}
+
+.rs-input-group.rs-input-group-inside .rs-input-group-btn:focus,
+.rs-input-group.rs-input-group-inside .rs-input-group-btn:hover {
+  background-color: transparent;
+}
+
+//MODAL
+.rs-modal-content {
+  color: var(--color-light);
+  background-color: var(--color-background);
+}
+
+.rs-modal-title {
+  color: var(--color-light);
+}
+
+//DRAWER
+.rs-drawer-content {
+  background-color: var(--color-background);
+}
+
+.rs-drawer-backdrop {
+  backdrop-filter: blur(1px);
+}
+
+.rs-btn-icon.rs-btn-sm {
+  cursor: pointer;
+}
+
+@media (min-width: 480px) {
+  .rs-btn-icon.rs-btn-sm {
+    margin-left: 15px;
+  }
+}
+
+//sidenav
+.rs-sidenav {
+  height: 100vh;
+}
+
+.rs-sidenav-body a {
+  color: var(--color-light-50);
+  text-decoration: none;
+}
+
+.rs-sidenav-inverse .rs-dropdown-item,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-item-toggle,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-menu-toggle,
+.rs-sidenav-inverse .rs-sidenav-toggle-button {
+  color: var(--color-light-50);
+}
+
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle:hover,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle:hover,
+.rs-sidenav-inverse .rs-sidenav-item,
+.rs-sidenav-inverse .rs-sidenav-item.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-sidenav-item:focus,
+.rs-sidenav-inverse .rs-sidenav-item:hover {
+  color: var(--color-light-50);
+}
+
+.rs-sidenav-item:hover {
+  background-color: var(--color-primary-500) !important;
+  color: var(--color-primary-200) !important;
+}
+
+.rs-sidenav-inverse .rs-dropdown-item.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown-item:focus,
+.rs-sidenav-inverse .rs-dropdown-item:hover,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-item-toggle.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-item-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-item-toggle:hover,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-menu-toggle.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-menu-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown-item > .rs-dropdown-menu-toggle:hover,
+.rs-sidenav-inverse .rs-sidenav-toggle-button.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-sidenav-toggle-button:focus,
+.rs-sidenav-inverse .rs-sidenav-toggle-button:hover {
+  background-color: var(--color-primary-300);
+  color: var(--color-dark-950);
+}
+
+.rs-sidenav-inverse,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle,
+.rs-sidenav-inverse .rs-dropdown-item-submenu:hover > .rs-dropdown-item-toggle,
+.rs-sidenav-inverse .rs-sidenav-item,
+.rs-sidenav-inverse .rs-sidenav-toggle-button {
+  background-color: var(--color-background-light);
+}
+
+.rs-sidenav-inverse .rs-dropdown-item.rs-dropdown-item-active,
+.rs-sidenav-inverse .rs-sidenav-item.rs-sidenav-item-active {
+  background-color: var(--color-primary-400);
+  color: var(--color-dark-900);
+}
+
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle:hover,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown.rs-dropdown-selected-within .rs-dropdown-toggle:hover,
+.rs-sidenav-inverse .rs-sidenav-item,
+.rs-sidenav-inverse .rs-sidenav-item.rs-dropdown-item-focus,
+.rs-sidenav-inverse .rs-sidenav-item:focus,
+.rs-sidenav-inverse .rs-sidenav-item:hover {
+  color: var(--color-light-50);
+}
+
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown .rs-dropdown-toggle:hover,
+.rs-sidenav-inverse .rs-dropdown-item-submenu:hover > .rs-dropdown-item-toggle:focus,
+.rs-sidenav-inverse .rs-dropdown-item-submenu:hover > .rs-dropdown-item-toggle:hover,
+.rs-sidenav-inverse .rs-sidenav-item:focus,
+.rs-sidenav-inverse .rs-sidenav-item:hover,
+.rs-sidenav-inverse .rs-sidenav-toggle-button:focus,
+.rs-sidenav-inverse .rs-sidenav-toggle-button:hover {
+  background-color: var(--color-primary-300);
+  color: var(--color-dark-950) !important;
+}
+
+//Tab
+.rs-nav-item {
+  color: var(--color-light-50);
+}
+
+//TABLE
+.rs-table-hover .rs-table-row:hover .rs-table-cell,
+.rs-table-hover .rs-table-row:hover .rs-table-cell-group,
+.rs-table-row-expanded,
+.rs-table-row-header,
+.rs-table-row-header .rs-table-cell {
+  background-color: transparent;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.rs-table-cell {
+  background-color: transparent;
+}
+
+.rs-picker-default .rs-btn,
+.rs-picker-default .rs-picker-toggle,
+.rs-picker-input .rs-btn,
+.rs-picker-input .rs-picker-toggle {
+  background-color: transparent;
+}
+
+.rs-table-cell-group-fixed-left,
+.rs-table-cell-group-fixed-right {
+  background-color: transparent;
+}
+
+.rs-picker-default .rs-btn,
+.rs-picker-default .rs-picker-toggle,
+.rs-picker-input .rs-btn,
+.rs-picker-input .rs-picker-toggle {
+  background-color: transparent !important;
+}
+
+.rs-input {
+  color: inherit;
+  background-color: transparent;
+}
+
+.rs-input-group-sm.rs-input-group > .rs-input,
+.rs-input-group-sm.rs-input-group > .rs-input-group-addon {
+  height: auto;
+  min-height: 28px;
+}

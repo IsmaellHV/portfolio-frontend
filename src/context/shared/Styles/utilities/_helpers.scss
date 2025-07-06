@@ -1,0 +1,175 @@
+$colors: ('primary', 'secondary', 'secondary-dark', 'secondary-light', 'secondary-darkest', 'secondary-lightest', 'light', 'light-light', 'light-lightest', 'dark', 'black', 'white', 'green', 'gray', 'red', 'pink', 'orange', 'yellow', 'cyan', 'blue', 'violet');
+$colors_intensity: ('gray', 'red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'violet', 'primary');
+$intensity: ('50', '100', '200', '300', '400', '500', '600', '700', '800', '900');
+$mouse-cursor: (pointer, grab, grabbing, not-allowed);
+$font-family: (onest, sans, mono, poppis, courier);
+
+@each $color-name in $colors {
+  .bg-#{$color-name} {
+    background-color: var(--color-#{$color-name});
+    text-decoration: none;
+  }
+
+  .bg-#{$color-name}-hover:hover {
+    background-color: var(--color-#{$color-name});
+    text-decoration: none;
+  }
+
+  .color-#{$color-name} {
+    color: var(--color-#{$color-name});
+    text-decoration: none;
+  }
+
+  .color-#{$color-name}-hover:hover {
+    color: var(--color-#{$color-name});
+    text-decoration: none;
+  }
+
+  .border-color-#{$color-name} {
+    border: 1px solid var(--color-#{$color-name});
+  }
+
+  .outline-color-#{$color-name} {
+    outline: 1px solid var(--color-#{$color-name});
+  }
+}
+
+@each $color-name in $colors_intensity {
+  @each $intensity-name in $intensity {
+    .bg-#{$color-name}-#{$intensity-name} {
+      background-color: var(--color-#{$color-name}-#{$intensity-name});
+      text-decoration: none;
+    }
+
+    .bg-#{$color-name}-#{$intensity-name}-hover:hover {
+      background-color: var(--#{'rs'}-#{$color-name}-#{$intensity-name});
+      text-decoration: none;
+    }
+
+    .color-#{$color-name}-#{$intensity-name} {
+      color: var(--#{'rs'}-#{$color-name}-#{$intensity-name});
+      text-decoration: none;
+    }
+
+    .color-#{$color-name}-#{$intensity-name}-hover:hover {
+      color: var(--#{'rs'}-#{$color-name}-#{$intensity-name});
+      text-decoration: none;
+    }
+
+    .border-color-#{$color-name}-#{$intensity-name} {
+      border: 1px solid var(--#{'rs'}-#{$color-name}-#{$intensity-name});
+    }
+
+    .outline-color-#{$color-name}-#{$intensity-name} {
+      outline: 1px solid var(--#{'rs'}-#{$color-name}-#{$intensity-name});
+    }
+  }
+}
+
+@each $cursor in $mouse-cursor {
+  .cursor-#{$cursor} {
+    cursor: $cursor;
+  }
+}
+
+@for $i from 0 through 1000 {
+  .fs-#{$i} {
+    font-size: #{$i}px;
+  }
+
+  .m-#{$i} {
+    margin: #{$i}px;
+  }
+
+  .mt-#{$i} {
+    margin-top: #{$i}px;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: #{$i}px;
+  }
+
+  .ml-#{$i} {
+    margin-left: #{$i}px;
+  }
+
+  .mr-#{$i} {
+    margin-right: #{$i}px;
+  }
+
+  .p-#{$i} {
+    padding: #{$i}px;
+  }
+
+  .pt-#{$i} {
+    padding-top: #{$i}px;
+  }
+
+  .pb-#{$i} {
+    padding-bottom: #{$i}px;
+  }
+
+  .pl-#{$i} {
+    padding-left: #{$i}px;
+  }
+
+  .pr-#{$i} {
+    padding-right: #{$i}px;
+  }
+
+  .w-#{$i} {
+    width: #{$i}px;
+  }
+
+  .h-#{$i} {
+    height: #{$i}px;
+  }
+
+  .min-w-#{$i} {
+    min-width: #{$i}px;
+  }
+
+  .min-h-#{$i} {
+    min-height: #{$i}px;
+  }
+
+  .max-w-#{$i} {
+    max-width: #{$i}px;
+  }
+
+  .max-h-#{$i} {
+    max-height: #{$i}px;
+  }
+
+  .lh-#{$i} {
+    line-height: #{$i}px;
+  }
+
+  .br-#{$i} {
+    border-radius: #{$i}px;
+  }
+
+  .bs-#{$i} {
+    box-shadow: 0 0 #{$i}px #{$i}px rgba(0, 0, 0, 0.1);
+  }
+
+  .z-#{$i} {
+    z-index: #{$i};
+  }
+
+  .o-#{$i} {
+    opacity: #{$i};
+  }
+}
+
+@for $i from 0 through 20 {
+  .fw-#{50 * $i} {
+    font-weight: 50 * $i;
+  }
+}
+
+@each $font in $font-family {
+  .font-family-#{$font} {
+    font-family: var(--font-#{$font});
+  }
+}

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Allow: /
+
+Sitemap: https://ismaelhv.com/sitemap.xml

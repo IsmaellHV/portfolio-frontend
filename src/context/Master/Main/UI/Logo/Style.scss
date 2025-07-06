@@ -1,0 +1,58 @@
+.logo {
+  position: relative;
+  width: var(--header-icon);
+  height: var(--header-icon);
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+
+  &:hover {
+    transform: translate(-5px, -4px);
+
+    .logo-container-shadow {
+      transform: translate(5px, 4px);
+    }
+  }
+
+  .logo-container,
+  .logo-container-shadow {
+    width: var(--header-icon);
+    height: var(--header-icon);
+    transition: transform 0.2s ease-out;
+  }
+
+  .logo-container {
+    .svg-logo > svg {
+      width: var(--header-icon);
+      height: var(--header-icon);
+      position: relative;
+    }
+
+    .svg-logo > svg {
+      fill: var(--color-background);
+      stroke: var(--color-primary-300);
+    }
+
+    .svg-logo > svg > text {
+      fill: var(--color-primary-300);
+      stroke: var(--color-primary-300);
+    }
+  }
+
+  .logo-container-shadow {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .svg-logo > svg {
+      width: var(--header-icon);
+      height: var(--header-icon);
+    }
+
+    .svg-logo > svg,
+    .svg-logo > svg > text {
+      fill: var(--color-primary-300);
+      stroke: var(--color-primary-300);
+    }
+  }
+}

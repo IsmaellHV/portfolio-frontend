@@ -1,0 +1,20 @@
+.breadcrumb {
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  // background-color: var(--color-background);
+  padding: var(--breadcrumb-padding);
+  text-wrap: nowrap;
+  overflow: hidden;
+  margin-top: var(--header-height);
+  height: var(--breadcrumb-height);
+
+  transition: box-shadow 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+
+  @media (max-height: 450px) {
+    margin-top: 0;
+  }
+}

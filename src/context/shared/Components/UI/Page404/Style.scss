@@ -1,0 +1,32 @@
+.ViewPage404 {
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px #000000;
+
+  &__text {
+    margin-top: 20px;
+  }
+
+  &__button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #f5f5f5;
+    color: black;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}

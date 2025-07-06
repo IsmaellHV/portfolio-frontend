@@ -1,0 +1,77 @@
+.master-contacct {
+  height: 100%;
+  place-content: center;
+  margin: 0 auto;
+  padding: 0 var(--header-padding);
+
+  .info {
+    .title {
+      font-family: var(--font-mono);
+      color: var(--color-light-50) !important;
+      font-size: calc(var(--font-size) * 1.5);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      &::before {
+        font-weight: 300;
+        content: '02.';
+        margin-right: 0.5rem;
+        color: var(--rs-primary-400);
+      }
+      &::after {
+        content: '';
+        flex: 1;
+        margin-left: 1rem;
+        height: 1px;
+        background-color: var(--color-light-50);
+      }
+    }
+
+    .rs-panel {
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+
+    .contact-panel {
+      text-align: center;
+      padding: 20px;
+    }
+
+    h3,
+    h4,
+    h5 {
+      color: var(--color-primary-300);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .rs-stack {
+      color: var(--color-light-50);
+    }
+
+    .rs-stack-item {
+      text-align: center;
+    }
+
+    // SOCIAL PILLS
+    .social-pills {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .photo {
+      height: 300px;
+      place-content: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

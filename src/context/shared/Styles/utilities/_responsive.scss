@@ -1,0 +1,202 @@
+/**************************************** WIDTH ****************************************/
+/* Estilos para pantallas con ancho menor a 480px */
+@media (max-width: 479px) {
+  /* Estilos para XXS */
+  :root {
+    --header-icon: var(--header-icon-xxs);
+    --font-size: var(--font-size-xxs);
+    --margin: var(--margin-xxs);
+    --button-padding: var(--button-padding-xxs);
+    --header-padding: var(--header-padding-xxs);
+    --aside-width: var(--aside-width-xxs);
+    --aside-width-colapsed: var(--aside-width-colapsed-xxs);
+    --breadcrumb-height: var(--breadcrumb-height-xxs);
+    --breadcrumb-padding: var(--breadcrumb-padding-xxs);
+    --header-inspireHub-padding: var(--header-inspireHub-padding-xxs);
+  }
+}
+
+/* Estilos para pantallas con ancho entre 400px y 575px */
+@media (min-width: 480px) and (max-width: 575px) {
+  /* Estilos para XS */
+  :root {
+    --header-icon: var(--header-icon-xs);
+    --font-size: var(--font-size-xs);
+    --margin: var(--margin-xs);
+    --button-padding: var(--button-padding-xs);
+    --header-padding: var(--header-padding-xs);
+    --aside-width: var(--aside-width-xs);
+    --aside-width-colapsed: var(--aside-width-colapsed-xs);
+    --breadcrumb-height: var(--breadcrumb-height-xs);
+    --breadcrumb-padding: var(--breadcrumb-padding-xs);
+    --header-inspireHub-padding: var(--header-inspireHub-padding-xs);
+  }
+}
+
+/* Estilos para pantallas con ancho entre 576px y 575px */
+@media (min-width: 576px) and (max-width: 767px) {
+  /* Estilos para SM */
+  :root {
+    --header-icon: var(--header-icon-sm);
+    --font-size: var(--font-size-sm);
+    --margin: var(--margin-sm);
+    --button-padding: var(--button-padding-sm);
+    --header-padding: var(--header-padding-sm);
+    --aside-width: var(--aside-width-sm);
+    --aside-width-colapsed: var(--aside-width-colapsed-sm);
+    --breadcrumb-height: var(--breadcrumb-height-sm);
+    --breadcrumb-padding: var(--breadcrumb-padding-sm);
+    --header-inspireHub-padding: var(--header-inspireHub-padding-sm);
+  }
+}
+
+/* Estilos para pantallas con ancho entre 768px y 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Estilos para MD */
+  :root {
+    --header-icon: var(--header-icon-md);
+    --font-size: var(--font-size-md);
+    --margin: var(--margin-md);
+    --button-padding: var(--button-padding-md);
+    --header-padding: var(--header-padding-md);
+    --aside-width: var(--aside-width-md);
+    --aside-width-colapsed: var(--aside-width-colapsed-md);
+    --breadcrumb-height: var(--breadcrumb-height-md);
+    --breadcrumb-padding: var(--breadcrumb-padding-md);
+    --header-inspireHub-padding: var(--header-inspireHub-padding-md);
+  }
+}
+
+/* Estilos para pantallas con ancho entre 992px y 1199px */
+@media (min-width: 992px) and (max-width: 1199px) {
+  /* Estilos para LG */
+  :root {
+    --header-icon: var(--header-icon-lg);
+    --font-size: var(--font-size-lg);
+    --margin: var(--margin-lg);
+    --button-padding: var(--button-padding-lg);
+    --header-padding: var(--header-padding-lg);
+    --aside-width: var(--aside-width-lg);
+    --aside-width-colapsed: var(--aside-width-colapsed-lg);
+    --breadcrumb-height: var(--breadcrumb-height-lg);
+    --breadcrumb-padding: var(--breadcrumb-padding-lg);
+    --header-inspireHub-padding: var(--header-inspireHub-padding-lg);
+  }
+}
+
+/* Estilos para pantallas con ancho entre 992px y 1399px */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  /* Estilos para XL */
+  :root {
+    --header-icon: var(--header-icon-xl);
+    --font-size: var(--font-size-xl);
+    --margin: var(--margin-xl);
+    --button-padding: var(--button-padding-xl);
+    --header-padding: var(--header-padding-xl);
+    --aside-width: var(--aside-width-xl);
+    --aside-width-colapsed: var(--aside-width-colapsed-xl);
+    --breadcrumb-height: var(--breadcrumb-height-xl);
+    --breadcrumb-padding: var(--breadcrumb-padding-xl);
+  }
+}
+
+/* Estilos para pantallas con ancho de 1400px o más */
+@media (min-width: 1400px) {
+  /* Estilos para XXL */
+  :root {
+    --header-icon: var(--header-icon-xxl);
+    --font-size: var(--font-size-xxl);
+    --margin: var(--margin-xxl);
+    --button-padding: var(--button-padding-xxl);
+    --header-padding: var(--header-padding-xxl);
+    --aside-width: var(--aside-width-xxl);
+    --aside-width-colapsed: var(--aside-width-colapsed-xxl);
+    --breadcrumb-height: var(--breadcrumb-height-xxl);
+    --breadcrumb-padding: var(--breadcrumb-padding-xxl);
+    --header-inspireHub-padding: var(--header-inspireHub-padding-xxl);
+  }
+}
+
+/**************************************** HEIGHT ****************************************/
+/* Estilos para pantallas con altura menor a 149px */
+@media (max-height: 149px) {
+  /* Estilos para XXXS */
+  :root {
+    --header-height: var(--header-height-xxxs);
+  }
+}
+
+/* Estilos para pantallas con altura entre 150px y 399px */
+@media (min-height: 150px) and (max-height: 299px) {
+  /* Estilos para XXS */
+  :root {
+    --header-height: var(--header-height-xxs);
+  }
+}
+
+/* Estilos para pantallas con altura entre 300px y 399px */
+@media (min-height: 300px) and (max-height: 399px) {
+  /* Estilos para XS */
+  :root {
+    --header-height: var(--header-height-xs);
+  }
+}
+
+/* Estilos para pantallas con altura entre 400px y 599px */
+@media (min-height: 400px) and (max-height: 599px) {
+  /* Estilos para SM */
+  :root {
+    --header-height: var(--header-height-sm);
+  }
+}
+
+/* Estilos para pantallas con altura entre 600px y 799px */
+@media (min-height: 600px) and (max-height: 799px) {
+  /* Estilos para MD */
+  :root {
+    --header-height: var(--header-height-md);
+  }
+}
+
+/* Estilos para pantallas con altura entre 800px y 999px */
+@media (min-height: 800px) and (max-height: 999px) {
+  /* Estilos para LG */
+  :root {
+    --header-height: var(--header-height-lg);
+  }
+}
+
+/* Estilos para pantallas con altura entre 1000px y 1199px */
+@media (min-height: 1000px) and (max-height: 1199px) {
+  /* Estilos para XL */
+  :root {
+    --header-height: var(--header-height-xl);
+  }
+}
+
+/* Estilos para pantallas con altura de 1200px o más */
+@media (min-height: 1200px) {
+  /* Estilos para XXL */
+  :root {
+    --header-height: var(--header-height-xxl);
+  }
+}
+
+/* Tamaño de Pantallas Ancho
+XXL: >= 1400px
+XL: < 1400px
+LG: < 1200px
+MD: < 992px
+SM: < 768px
+XS: < 576px
+XXS: < 480px
+*/
+
+/* Tamaños de Pantalla por Altura
+XXL: >= 1200px
+XL: 1000px – 1199px
+LG: 800px – 999px
+MD: 600px – 799px
+SM: 400px – 599px
+XS: < 400px
+ */

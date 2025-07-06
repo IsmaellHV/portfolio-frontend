@@ -1,0 +1,136 @@
+:root {
+  --font-onest: 'Onest', 'Open Sans', 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --font-sans: 'Open Sans', 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  --font-poppis: 'Poppins', 'Open Sans', 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --font-satoshi: 'Satoshi', 'Open Sans', 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --font-courier: 'Courier New', 'Courier', 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+}
+
+:root {
+  --font-size-xxl: 16px;
+  --font-size-xl: 15.5px;
+  --font-size-lg: 15px;
+  --font-size-md: 14.5px;
+  --font-size-sm: 14px;
+  --font-size-xs: 13.5px;
+  --font-size-xxs: 13px;
+
+  --margin-xxl: 3px;
+  --margin-xl: 2.5px;
+  --margin-lg: 2px;
+  --margin-md: 1.5px;
+  --margin-sm: 1.25px;
+  --margin-xs: 1px;
+  --margin-xxs: 0.75px;
+
+  --button-padding-xxl: 0.5rem;
+  --button-padding-xl: 0.45rem;
+  --button-padding-lg: 0.4rem;
+  --button-padding-md: 0.35rem;
+  --button-padding-sm: 0.3rem;
+  --button-padding-xs: 0.25rem;
+  --button-padding-xxs: 0.2rem;
+
+  --header-height-xxl: 6vh;
+  --header-height-xl: 7vh;
+  --header-height-lg: 8vh;
+  --header-height-md: 10vh;
+  --header-height-sm: 13vh;
+  --header-height-xs: 17vh;
+  --header-height-xxs: 22vh;
+  --header-height-xxxs: 30vh;
+
+  --header-padding-xxl: 10rem;
+  --header-padding-xl: 9rem;
+  --header-padding-lg: 8rem;
+  --header-padding-md: 6rem;
+  --header-padding-sm: 4rem;
+  --header-padding-xs: 2rem;
+  --header-padding-xxs: 1.5rem;
+
+  --header-icon-xxl: 2.8rem;
+  --header-icon-xl: 2.75rem;
+  --header-icon-lg: 2.7rem;
+  --header-icon-md: 2.65rem;
+  --header-icon-sm: 2.6rem;
+  --header-icon-xs: 2.55rem;
+  --header-icon-xxs: 2.5rem;
+
+  --aside-width-xxl: 200px;
+  --aside-width-xl: 200px;
+  --aside-width-lg: 200px;
+  --aside-width-md: 180px;
+  --aside-width-sm: 150px;
+  --aside-width-xs: 150px;
+  --aside-width-xxs: 150px;
+
+  --aside-width-colapsed-xxl: 56px;
+  --aside-width-colapsed-xl: 56px;
+  --aside-width-colapsed-lg: 56px;
+  --aside-width-colapsed-md: 56px;
+  --aside-width-colapsed-sm: 56px;
+  --aside-width-colapsed-xs: 56px;
+  --aside-width-colapsed-xxs: 56px;
+
+  --breadcrumb-height-xxl: 6vh;
+  --breadcrumb-height-xl: 5.75vh;
+  --breadcrumb-height-lg: 5.5vh;
+  --breadcrumb-height-md: 5.25vh;
+  --breadcrumb-height-sm: 5vh;
+  --breadcrumb-height-xs: 4.75vh;
+  --breadcrumb-height-xxs: 4.5vh;
+
+  --breadcrumb-padding-xxl: 2vh;
+  --breadcrumb-padding-xl: 1.9vh;
+  --breadcrumb-padding-lg: 1.8vh;
+  --breadcrumb-padding-md: 1.7vh;
+  --breadcrumb-padding-sm: 1.6vh;
+  --breadcrumb-padding-xs: 1.5vh;
+  --breadcrumb-padding-xxs: 1.4vh;
+
+  --header-inspireHub-padding-xxl: 1.6rem;
+  --header-inspireHub-padding-xl: 1.5rem;
+  --header-inspireHub-padding-lg: 1.4rem;
+  --header-inspireHub-padding-md: 1.3rem;
+  --header-inspireHub-padding-sm: 1.2rem;
+  --header-inspireHub-padding-xs: 1.1rem;
+  --header-inspireHub-padding-xxs: 1rem;
+
+  --header-padding-xxl: 10rem;
+  --header-padding-xl: 9rem;
+  --header-padding-lg: 8rem;
+  --header-padding-md: 6rem;
+  --header-padding-sm: 4rem;
+  --header-padding-xs: 2rem;
+  --header-padding-xxs: 1.5rem;
+
+  --font-size: var(--font-size-xxl);
+  --margin: var(--margin-xxl);
+  --button-padding: var(--button-padding-xxl);
+  --header-height: var(--header-height-xxl);
+  --header-padding: var(--header-padding-xxl);
+  --header-icon: var(--header-icon-xxl);
+  --aside-width: var(--aside-width-xxl);
+  --breadcrumb-height: var(--breadcrumb-height-xxl);
+  --breadcrumb-padding: var(--breadcrumb-padding-xxl);
+}
+
+/* Tamaño de Pantallas Ancho
+XXL: >= 1400px
+XL: < 1400px
+LG: < 1200px
+MD: < 992px
+SM: < 768px
+XS: < 576px
+XXS: < 480px
+*/
+
+/* Tamaños de Pantalla por Altura
+XXL: >= 1200px
+XL: 1000px – 1199px
+LG: 800px – 999px
+MD: 600px – 799px
+SM: 400px – 599px
+XS: < 400px
+ */

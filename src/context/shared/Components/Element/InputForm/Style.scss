@@ -1,0 +1,13 @@
+.input-form {
+  label {
+    color: var(--color-light-100);
+    font-size: var(--font-size) !important;
+  }
+
+  input,
+  textarea {
+    color: var(--color-black);
+    font-size: var(--font-size) !important;
+    padding: 4px 11px !important;
+  }
+}
