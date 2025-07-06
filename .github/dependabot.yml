@@ -1,0 +1,103 @@
+# Dependabot configuration for automatic dependency updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Enable version updates for npm (JavaScript/TypeScript)
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'America/Mexico_City'
+    open-pull-requests-limit: 10
+    reviewers:
+      - 'IsmaellHV'
+    assignees:
+      - 'IsmaellHV'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps-dev'
+      include: 'scope'
+    labels:
+      - 'dependencies'
+      - 'automated'
+    # Group updates to reduce PR noise
+    groups:
+      react-ecosystem:
+        patterns:
+          - 'react*'
+          - '@types/react*'
+      build-tools:
+        patterns:
+          - 'vite*'
+          - '@vitejs/*'
+          - 'typescript'
+          - 'tsconfig*'
+      animation-libs:
+        patterns:
+          - 'framer-motion'
+          - 'gsap'
+      three-js:
+        patterns:
+          - 'three'
+          - '@react-three/*'
+      ui-components:
+        patterns:
+          - 'rsuite'
+          - 'primereact'
+          - 'lucide-react'
+          - '@fortawesome/*'
+      development-tools:
+        patterns:
+          - 'eslint*'
+          - 'prettier'
+          - '@types/*'
+    # Ignore specific updates if needed
+    ignore:
+      # Ignore major version updates for potentially breaking changes
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'America/Mexico_City'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'IsmaellHV'
+    assignees:
+      - 'IsmaellHV'
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'
+    labels:
+      - 'github-actions'
+      - 'automated'
+
+  # Enable version updates for Docker
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'America/Mexico_City'
+    open-pull-requests-limit: 3
+    reviewers:
+      - 'IsmaellHV'
+    assignees:
+      - 'IsmaellHV'
+    commit-message:
+      prefix: 'docker'
+      include: 'scope'
+    labels:
+      - 'docker'
+      - 'automated'
