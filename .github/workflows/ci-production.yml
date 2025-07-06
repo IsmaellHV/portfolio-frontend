@@ -1,9 +1,9 @@
-name: DEPLOY-HUB
+name: DEPLOY-PRODUCTION
 
 on:
   push:
     branches:
-      - hub
+      - production
 
 jobs:
   build-and-deploy:
