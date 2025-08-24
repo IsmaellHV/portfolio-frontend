@@ -5,6 +5,9 @@ import InspireHubFastLink from '../../../context/InspireHub/FastLink';
 import InspireHubGames from '../../../context/InspireHub/Games';
 import InspireHubGamesSnake from '../../../context/InspireHub/GamesSnake';
 import InspireHubGamesTetris from '../../../context/InspireHub/GamesTetris';
+import InspireHubGamesPong from '../../../context/InspireHub/GamesPong';
+import InspireHubGames2048 from '../../../context/InspireHub/Games2048';
+import InspireHubGamesMemory from '../../../context/InspireHub/GamesMemory';
 import InspireHubHome from '../../../context/InspireHub/Home';
 import InspireHubLogin from '../../../context/InspireHub/Login';
 import InspireHubMain from '../../../context/InspireHub/Main';
@@ -14,7 +17,7 @@ import { LoaderPage } from '../../../context/shared/Components/Element/LoaderPag
 import { Page404 } from '../../../context/shared/Components/UI/Page404/View';
 import { ENVIRONMENT } from '../../../env';
 import { AuthGuardInspireHub } from './AuthGuardInspireHub';
-import { LoaderLazy } from '@/Components/Element/LoaderLazy/View';
+import { LoaderLazy } from '../../../context/shared/Components/Element/LoaderLazy/View';
 const MasterMain = lazy(() => import('../../../context/Master/Main'));
 const MasterHome = lazy(() => import('../../../context/Master/Home'));
 
@@ -44,6 +47,9 @@ export const AppRoutes = () => {
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMES} element={<InspireHubGames />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMESTETRIS} element={<InspireHubGamesTetris />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMESSNAKE} element={<InspireHubGamesSnake />} />
+            <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMESPONG} element={<InspireHubGamesPong />} />
+            <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMES2048} element={<InspireHubGames2048 />} />
+            <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMESMEMORY} element={<InspireHubGamesMemory />} />
           </Route>
         </Routes>
       </BrowserRouter>

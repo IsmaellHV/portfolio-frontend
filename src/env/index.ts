@@ -62,6 +62,9 @@ interface IEnvironment {
     INSPIREHUBGAMES: string;
     INSPIREHUBGAMESTETRIS: string;
     INSPIREHUBGAMESSNAKE: string;
+    INSPIREHUBGAMESPONG: string;
+    INSPIREHUBGAMES2048: string;
+    INSPIREHUBGAMESMEMORY: string;
     INSPIREHUBLOGIN: string;
   };
 
@@ -89,6 +92,27 @@ interface IEnvironment {
   };
 
   INSPIREHUB_GAMESSNAKE: {
+    SCHEMA: string;
+    ENTITY: string;
+    SCHEMA_DESC: string;
+    ENTITY_DESC: string;
+  };
+
+  INSPIREHUB_GAMESPONG: {
+    SCHEMA: string;
+    ENTITY: string;
+    SCHEMA_DESC: string;
+    ENTITY_DESC: string;
+  };
+
+  INSPIREHUB_GAMES2048: {
+    SCHEMA: string;
+    ENTITY: string;
+    SCHEMA_DESC: string;
+    ENTITY_DESC: string;
+  };
+
+  INSPIREHUB_GAMESMEMORY: {
     SCHEMA: string;
     ENTITY: string;
     SCHEMA_DESC: string;
@@ -185,6 +209,9 @@ export const ENVIRONMENT: IEnvironment = {
     INSPIREHUBGAMES: '/inspire-hub/games',
     INSPIREHUBGAMESTETRIS: '/inspire-hub/games/tetris',
     INSPIREHUBGAMESSNAKE: '/inspire-hub/games/snake',
+    INSPIREHUBGAMESPONG: '/inspire-hub/games/pong',
+    INSPIREHUBGAMES2048: '/inspire-hub/games/2048',
+    INSPIREHUBGAMESMEMORY: '/inspire-hub/games/memory',
     INSPIREHUBLOGIN: '/inspire-hub/login',
   },
 
@@ -216,6 +243,27 @@ export const ENVIRONMENT: IEnvironment = {
     ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_GAMESSNAKE_ENTITY || '',
     SCHEMA_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESSNAKE_SCHEMA_DESC || '',
     ENTITY_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESSNAKE_ENTITY_DESC || '',
+  },
+
+  INSPIREHUB_GAMESPONG: {
+    SCHEMA: import.meta.env.VITE_VAR_INSPIREHUB_GAMESPONG_SCHEMA || '',
+    ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_GAMESPONG_ENTITY || '',
+    SCHEMA_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESPONG_SCHEMA_DESC || '',
+    ENTITY_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESPONG_ENTITY_DESC || '',
+  },
+
+  INSPIREHUB_GAMES2048: {
+    SCHEMA: import.meta.env.VITE_VAR_INSPIREHUB_GAMES2048_SCHEMA || '',
+    ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_GAMES2048_ENTITY || '',
+    SCHEMA_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMES2048_SCHEMA_DESC || '',
+    ENTITY_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMES2048_ENTITY_DESC || '',
+  },
+
+  INSPIREHUB_GAMESMEMORY: {
+    SCHEMA: import.meta.env.VITE_VAR_INSPIREHUB_GAMESMEMORY_SCHEMA || '',
+    ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_GAMESMEMORY_ENTITY || '',
+    SCHEMA_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESMEMORY_SCHEMA_DESC || '',
+    ENTITY_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESMEMORY_ENTITY_DESC || '',
   },
 
   SUPABASE: {

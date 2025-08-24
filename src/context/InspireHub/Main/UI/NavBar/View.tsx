@@ -1,6 +1,6 @@
 import { faLightbulb, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { User } from '@supabase/supabase-js';
+
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigateFunction, useNavigate } from 'react-router-dom';

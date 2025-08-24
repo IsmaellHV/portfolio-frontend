@@ -66,6 +66,15 @@ export const SideNav = (props: PropsView) => {
               <Nav.Item eventKey="3-3" onSelect={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUBGAMESSNAKE)}>
                 Snake
               </Nav.Item>
+              <Nav.Item eventKey="3-4" onSelect={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUBGAMESPONG)}>
+                Pong
+              </Nav.Item>
+              <Nav.Item eventKey="3-5" onSelect={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUBGAMES2048)}>
+                2048
+              </Nav.Item>
+              <Nav.Item eventKey="3-6" onSelect={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUBGAMESMEMORY)}>
+                Memory
+              </Nav.Item>
             </Nav.Menu>
           </Nav>
         </Sidenav.Body>

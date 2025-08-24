@@ -133,3 +133,4 @@ vercel.env
 .envProd
 .env.local
 .env.back
+.supabase

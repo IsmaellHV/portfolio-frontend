@@ -1,0 +1,336 @@
+.pong-game {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  color: white;
+
+  .game-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .game-info {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        .icon {
+          width: 20px;
+          height: 20px;
+        }
+
+        span {
+          font-weight: 600;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+
+  .game-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    .game-board-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+      .game-board {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .controls-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      min-width: 300px;
+
+      .control-section {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        h3 {
+          margin: 0 0 1rem 0;
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: #ffd93d;
+        }
+
+        h4 {
+          margin: 1rem 0 0.5rem 0;
+          font-size: 1rem;
+          font-weight: 500;
+          color: #ff6b6b;
+        }
+
+        .button-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .rs-btn {
+            justify-content: flex-start;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+
+            &:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+          }
+        }
+
+        .stats-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+
+          .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            .stat-label {
+              display: block;
+              font-size: 0.9rem;
+              color: rgba(255, 255, 255, 0.8);
+              margin-bottom: 0.25rem;
+            }
+
+            .stat-value {
+              display: block;
+              font-size: 1.5rem;
+              font-weight: bold;
+              color: #00d4aa;
+            }
+          }
+        }
+
+        .controls-info {
+          .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            .key {
+              background: rgba(255, 255, 255, 0.2);
+              padding: 0.25rem 0.5rem;
+              border-radius: 5px;
+              font-family: monospace;
+              font-weight: bold;
+              font-size: 0.9rem;
+              min-width: 60px;
+              text-align: center;
+            }
+
+            span:last-child {
+              color: rgba(255, 255, 255, 0.9);
+              font-size: 0.9rem;
+            }
+          }
+        }
+
+        &.mobile-controls {
+          .mobile-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+
+            .mobile-btn {
+              font-weight: 600;
+              border-radius: 10px;
+              transition: all 0.3s ease;
+
+              &:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+              }
+
+              &.ai-btn {
+                background: rgba(255, 107, 107, 0.2);
+                border-color: #ff6b6b;
+                color: #ff6b6b;
+
+                &:hover:not(:disabled) {
+                  background: rgba(255, 107, 107, 0.3);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .game-over-content {
+    text-align: center;
+    padding: 1rem 0;
+
+    .final-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      .stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        background: rgba(0, 212, 170, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 212, 170, 0.3);
+
+        .label {
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .value {
+          font-weight: bold;
+          font-size: 1.2rem;
+          color: #00d4aa;
+        }
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 1024px) {
+    .game-container {
+      flex-direction: column;
+      align-items: center;
+
+      .controls-panel {
+        width: 100%;
+        max-width: 600px;
+
+        .control-section {
+          .button-group {
+            flex-direction: row;
+            flex-wrap: wrap;
+          }
+
+          &.mobile-controls {
+            .mobile-buttons {
+              grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .game-header {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .game-info {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+
+        .info-item {
+          width: fit-content;
+        }
+      }
+    }
+
+    .game-container {
+      .game-board-container {
+        padding: 1rem;
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .controls-panel {
+        .control-section {
+          .stats-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .controls-info {
+            .control-row {
+              flex-direction: column;
+              gap: 0.5rem;
+              text-align: center;
+
+              .key {
+                min-width: auto;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .game-header {
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .game-container {
+      .controls-panel {
+        min-width: auto;
+
+        .control-section {
+          padding: 1rem;
+
+          .button-group {
+            .rs-btn {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

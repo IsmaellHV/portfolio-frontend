@@ -18,82 +18,77 @@ export default defineConfig(() => {
           drop_console: isProduction,
           drop_debugger: isProduction,
           pure_funcs: isProduction ? ['console.log', 'console.info', 'console.debug'] : [],
-          passes: 2
+          passes: 2,
         },
         mangle: {
           safari10: true,
           keep_fnames: false,
-          reserved: ['$', 'exports', 'require']
+          reserved: ['$', 'exports', 'require'],
         },
         format: {
           comments: false,
-          ascii_only: true
-        }
+          ascii_only: true,
+        },
       },
       rollupOptions: {
         plugins: [
-          ...(isProduction ? [
-            obfuscatorPlugin({
-              compact: true,
-              controlFlowFlattening: true,
-              controlFlowFlatteningThreshold: 0.75,
-              deadCodeInjection: true,
-              deadCodeInjectionThreshold: 0.4,
-              debugProtection: false,
-              debugProtectionInterval: 0,
-              disableConsoleOutput: true,
-              identifierNamesGenerator: 'hexadecimal',
-              log: false,
-              numbersToExpressions: true,
-              renameGlobals: false,
-              selfDefending: true,
-              simplify: true,
-              splitStrings: true,
-              splitStringsChunkLength: 10,
-              stringArray: true,
-              stringArrayCallsTransform: true,
-              stringArrayEncoding: ['base64'],
-              stringArrayIndexShift: true,
-              stringArrayRotate: true,
-              stringArrayShuffle: true,
-              stringArrayWrappersCount: 2,
-              stringArrayWrappersChainedCalls: true,
-              stringArrayWrappersParametersMaxCount: 4,
-              stringArrayWrappersType: 'function',
-              stringArrayThreshold: 0.75,
-              transformObjectKeys: true,
-              unicodeEscapeSequence: false,
-              reservedNames: [
-                '^React',
-                '^ReactDOM',
-                '^__vite',
-                '^import',
-                '^export',
-                '^require',
-                '^module',
-                '^global',
-                '^window',
-                '^document'
+          ...(isProduction
+            ? [
+                obfuscatorPlugin({
+                  compact: true,
+                  controlFlowFlattening: true,
+                  controlFlowFlatteningThreshold: 0.75,
+                  deadCodeInjection: true,
+                  deadCodeInjectionThreshold: 0.4,
+                  debugProtection: false,
+                  debugProtectionInterval: 0,
+                  disableConsoleOutput: true,
+                  identifierNamesGenerator: 'hexadecimal',
+                  log: false,
+                  numbersToExpressions: true,
+                  renameGlobals: false,
+                  selfDefending: true,
+                  simplify: true,
+                  splitStrings: true,
+                  splitStringsChunkLength: 10,
+                  stringArray: true,
+                  stringArrayCallsTransform: true,
+                  stringArrayEncoding: ['base64'],
+                  stringArrayIndexShift: true,
+                  stringArrayRotate: true,
+                  stringArrayShuffle: true,
+                  stringArrayWrappersCount: 2,
+                  stringArrayWrappersChainedCalls: true,
+                  stringArrayWrappersParametersMaxCount: 4,
+                  stringArrayWrappersType: 'function',
+                  stringArrayThreshold: 0.75,
+                  transformObjectKeys: true,
+                  unicodeEscapeSequence: false,
+                  reservedNames: [
+                    '^React',
+                    '^ReactDOM',
+                    '^__vite',
+                    '^import',
+                    '^export',
+                    '^require',
+                    '^module',
+                    '^global',
+                    '^window',
+                    '^document',
+                  ],
+                }),
               ]
-            })
-          ] : [])
+            : []),
         ],
-        external: [
-           'chart.js/auto', 
-           'quill'
-         ],
+        external: ['chart.js/auto', 'quill'],
         output: {
           manualChunks: {
             // React Core
             'react-vendor': ['react', 'react-dom'],
-            
+
             // UI Libraries
-             'ui-vendor': [
-               'rsuite',
-               '@rsuite/icons',
-               '@rsuite/interactions'
-             ],
-            
+            'ui-vendor': ['rsuite', '@rsuite/icons', '@rsuite/interactions'],
+
             // Icons
             'icons-vendor': [
               '@fortawesome/react-fontawesome',
@@ -101,37 +96,21 @@ export default defineConfig(() => {
               '@fortawesome/free-solid-svg-icons',
               '@fortawesome/free-regular-svg-icons',
               '@fortawesome/free-brands-svg-icons',
-              'lucide-react'
+              'lucide-react',
             ],
-            
+
             // State Management & Routing
-            'state-vendor': [
-              '@reduxjs/toolkit',
-              'react-redux',
-              'redux',
-              'react-router-dom'
-            ],
-            
+            'state-vendor': ['@reduxjs/toolkit', 'react-redux', 'redux', 'react-router-dom'],
+
             // Animation Libraries
-            'animation-vendor': [
-              'framer-motion',
-              'gsap',
-              'react-transition-group'
-            ],
-            
+            'animation-vendor': ['framer-motion', 'gsap', 'react-transition-group'],
+
             // 3D Libraries
-            'three-vendor': [
-              'three',
-              '@react-three/fiber',
-              '@react-three/drei'
-            ],
-            
+            'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+
             // Form & Validation
-            'form-vendor': [
-              'formik',
-              'yup'
-            ],
-            
+            'form-vendor': ['formik', 'yup'],
+
             // Utilities
             'utils-vendor': [
               'crypto-js',
@@ -141,15 +120,12 @@ export default defineConfig(() => {
               'react-scroll',
               'sweetalert2',
               'sonner',
-              'ldrs'
+              'ldrs',
             ],
-            
+
             // External Services
-             'services-vendor': [
-               '@supabase/supabase-js',
-               'react-turnstile'
-             ]
-          }
+            'services-vendor': ['@supabase/supabase-js', 'react-turnstile'],
+          },
         },
       },
     },
@@ -163,9 +139,9 @@ export default defineConfig(() => {
     server: {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
     },
   };
 });
