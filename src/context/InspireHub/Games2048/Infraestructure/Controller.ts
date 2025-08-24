@@ -4,7 +4,6 @@ import { useSEO } from '../../../shared/Hook/useSEO';
 import { GameScoresService } from '../../../../lib/supabase';
 import { ENVIRONMENT } from '../../../../env';
 import { PropsView } from '../Domain/PropsView';
-import { AdapterConfigure } from './AdapterConfigure';
 
 const BOARD_SIZE = 4;
 const INITIAL_TILES = 2;
@@ -33,12 +32,14 @@ export const Controller = (): PropsView => {
   // SEO configuration
   useSEO({
     title: '2048 Game - InspireHub',
-    description: 'Juega al clásico 2048. Combina números para llegar a 2048.'
+    description: 'Juega al clásico 2048. Combina números para llegar a 2048.',
   });
 
   // Create empty board
   function createEmptyBoard(): number[][] {
-    return Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(0));
+    return Array(BOARD_SIZE)
+      .fill(null)
+      .map(() => Array(BOARD_SIZE).fill(0));
   }
 
   // Get empty cells
@@ -60,7 +61,7 @@ export const Controller = (): PropsView => {
     if (emptyCells.length === 0) return board;
 
     const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    const newBoard = board.map(row => [...row]);
+    const newBoard = board.map((row) => [...row]);
     newBoard[randomCell.row][randomCell.col] = Math.random() < 0.9 ? 2 : 4;
     return newBoard;
   }
@@ -76,12 +77,12 @@ export const Controller = (): PropsView => {
 
   // Move and merge logic
   function moveLeft(board: number[][]): { board: number[][]; score: number; moved: boolean } {
-    const newBoard = board.map(row => [...row]);
+    const newBoard = board.map((row) => [...row]);
     let totalScore = 0;
     let moved = false;
 
     for (let row = 0; row < BOARD_SIZE; row++) {
-      const filteredRow = newBoard[row].filter(cell => cell !== 0);
+      const filteredRow = newBoard[row].filter((cell) => cell !== 0);
       const mergedRow: number[] = [];
       let i = 0;
 
@@ -113,12 +114,12 @@ export const Controller = (): PropsView => {
   }
 
   function moveRight(board: number[][]): { board: number[][]; score: number; moved: boolean } {
-    const reversedBoard = board.map(row => [...row].reverse());
+    const reversedBoard = board.map((row) => [...row].reverse());
     const result = moveLeft(reversedBoard);
     return {
-      board: result.board.map(row => row.reverse()),
+      board: result.board.map((row) => row.reverse()),
       score: result.score,
-      moved: result.moved
+      moved: result.moved,
     };
   }
 
@@ -128,7 +129,7 @@ export const Controller = (): PropsView => {
     return {
       board: transpose(result.board),
       score: result.score,
-      moved: result.moved
+      moved: result.moved,
     };
   }
 
@@ -138,12 +139,12 @@ export const Controller = (): PropsView => {
     return {
       board: transpose(result.board),
       score: result.score,
-      moved: result.moved
+      moved: result.moved,
     };
   }
 
   function transpose(board: number[][]): number[][] {
-    return board[0].map((_, colIndex) => board.map(row => row[colIndex]));
+    return board[0].map((_, colIndex) => board.map((row) => row[colIndex]));
   }
 
   // Check if game is over
@@ -169,15 +170,15 @@ export const Controller = (): PropsView => {
 
   // Check if won (reached 2048)
   function checkWin(board: number[][]): boolean {
-    return board.some(row => row.some(cell => cell === 2048));
+    return board.some((row) => row.some((cell) => cell === 2048));
   }
 
   // Save previous state for undo
   function savePreviousState() {
     setPreviousState({
-      board: board.map(row => [...row]),
+      board: board.map((row) => [...row]),
       score,
-      moves
+      moves,
     });
     setCanUndo(true);
   }
@@ -185,19 +186,19 @@ export const Controller = (): PropsView => {
   // Game movement functions
   const handleMoveLeft = useCallback(() => {
     if (isGameOver || isWon) return;
-    
+
     savePreviousState();
     const result = moveLeft(board);
     if (result.moved) {
       const newBoard = addRandomTile(result.board);
       setBoard(newBoard);
-      setScore(prev => prev + result.score);
-      setMoves(prev => prev + 1);
-      
+      setScore((prev) => prev + result.score);
+      setMoves((prev) => prev + 1);
+
       if (checkWin(newBoard) && !isWon) {
         setIsWon(true);
       }
-      
+
       if (isGameOverCheck(newBoard)) {
         setIsGameOver(true);
         saveScore();
@@ -207,19 +208,19 @@ export const Controller = (): PropsView => {
 
   const handleMoveRight = useCallback(() => {
     if (isGameOver || isWon) return;
-    
+
     savePreviousState();
     const result = moveRight(board);
     if (result.moved) {
       const newBoard = addRandomTile(result.board);
       setBoard(newBoard);
-      setScore(prev => prev + result.score);
-      setMoves(prev => prev + 1);
-      
+      setScore((prev) => prev + result.score);
+      setMoves((prev) => prev + 1);
+
       if (checkWin(newBoard) && !isWon) {
         setIsWon(true);
       }
-      
+
       if (isGameOverCheck(newBoard)) {
         setIsGameOver(true);
         saveScore();
@@ -229,19 +230,19 @@ export const Controller = (): PropsView => {
 
   const handleMoveUp = useCallback(() => {
     if (isGameOver || isWon) return;
-    
+
     savePreviousState();
     const result = moveUp(board);
     if (result.moved) {
       const newBoard = addRandomTile(result.board);
       setBoard(newBoard);
-      setScore(prev => prev + result.score);
-      setMoves(prev => prev + 1);
-      
+      setScore((prev) => prev + result.score);
+      setMoves((prev) => prev + 1);
+
       if (checkWin(newBoard) && !isWon) {
         setIsWon(true);
       }
-      
+
       if (isGameOverCheck(newBoard)) {
         setIsGameOver(true);
         saveScore();
@@ -251,19 +252,19 @@ export const Controller = (): PropsView => {
 
   const handleMoveDown = useCallback(() => {
     if (isGameOver || isWon) return;
-    
+
     savePreviousState();
     const result = moveDown(board);
     if (result.moved) {
       const newBoard = addRandomTile(result.board);
       setBoard(newBoard);
-      setScore(prev => prev + result.score);
-      setMoves(prev => prev + 1);
-      
+      setScore((prev) => prev + result.score);
+      setMoves((prev) => prev + 1);
+
       if (checkWin(newBoard) && !isWon) {
         setIsWon(true);
       }
-      
+
       if (isGameOverCheck(newBoard)) {
         setIsGameOver(true);
         saveScore();
@@ -275,7 +276,7 @@ export const Controller = (): PropsView => {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (!gameStarted) return;
-      
+
       switch (event.key) {
         case 'ArrowLeft':
         case 'a':
@@ -326,7 +327,7 @@ export const Controller = (): PropsView => {
   useEffect(() => {
     if (gameStarted && !isGameOver && !isWon) {
       gameLoopRef.current = window.setInterval(() => {
-        setTime(prev => prev + 1);
+        setTime((prev) => prev + 1);
       }, 1000);
     } else if (gameLoopRef.current) {
       clearInterval(gameLoopRef.current);
@@ -352,8 +353,8 @@ export const Controller = (): PropsView => {
         extra_data: {
           board_state: board,
           highest_tile: Math.max(...board.flat()),
-          won: isWon
-        }
+          won: isWon,
+        },
       });
     } catch (error) {
       console.error('Error saving score:', error);
@@ -438,6 +439,6 @@ export const Controller = (): PropsView => {
     moveLeft: handleMoveLeft,
     moveRight: handleMoveRight,
     end,
-    init
+    init,
   };
 };

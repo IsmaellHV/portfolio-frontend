@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BreadCrumb as SharedBreadCrumb } from '../../../shared/Components/Element/BreadCrumb/View';
 import { ENVIRONMENT } from '../../../../env';
 
@@ -15,13 +14,12 @@ interface Props {
 export const BreadCrumb: React.FC<Props> = ({
   schemaCreateSpace,
   schema,
+  //eslint-disable-next-line
   entity,
   schemaDesc,
   entityDesc,
-  className
+  className,
 }) => {
-  const navigate = useNavigate();
-
   // Create breadcrumb list based on the schema hierarchy
   const breadcrumbList = [];
 
@@ -30,7 +28,7 @@ export const BreadCrumb: React.FC<Props> = ({
     breadcrumbList.push({
       text: schemaDesc,
       navigate: true,
-      path: `/${schema.toLowerCase()}`
+      path: `/${schema.toLowerCase()}`,
     });
   }
 
@@ -39,18 +37,12 @@ export const BreadCrumb: React.FC<Props> = ({
     breadcrumbList.push({
       text: entityDesc,
       navigate: false,
-      path: ''
+      path: '',
     });
   }
 
   // Default home path for games
   const homePath = schemaCreateSpace || ENVIRONMENT.ROUTE.INSPIREHUBGAMES;
 
-  return (
-    <SharedBreadCrumb
-      list={breadcrumbList}
-      home={homePath}
-      className={className}
-    />
-  );
+  return <SharedBreadCrumb list={breadcrumbList} home={homePath} className={className} />;
 };
