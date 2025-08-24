@@ -3,8 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import obfuscatorPlugin from 'rollup-plugin-javascript-obfuscator';
 
-export default defineConfig(({ command }) => {
-  const isBuild = command === 'build';
+export default defineConfig(() => {
   const isProduction = process.env.NODE_ENV === 'production';
 
   return {
