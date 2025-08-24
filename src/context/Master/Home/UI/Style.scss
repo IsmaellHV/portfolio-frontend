@@ -384,3 +384,198 @@
     display: none !important;
   }
 }
+
+// PROJECTS SECTION
+.projects {
+  height: 100%;
+  place-content: center;
+  margin: 0 auto;
+  padding: 0 var(--header-padding);
+  margin-bottom: 4rem;
+
+  .projects__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .projects__header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .projects__title {
+      font-family: var(--font-mono);
+      color: var(--color-light-50) !important;
+      font-size: calc(var(--font-size) * 1.5);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 1rem;
+
+      &::before {
+        font-weight: 300;
+        content: '03.';
+        margin-right: 0.5rem;
+        color: var(--rs-primary-400);
+      }
+      &::after {
+        content: '';
+        flex: 1;
+        margin-left: 1rem;
+        height: 1px;
+        background-color: var(--color-light-50);
+        max-width: 200px;
+      }
+    }
+
+    .projects__description {
+      font-size: calc(var(--font-size) * 1.1);
+      color: var(--color-light-300);
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .projects__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .project-card {
+    background: var(--color-background-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--color-light-700);
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-card__image {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .project-card__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        .project-card__actions {
+          display: flex;
+          gap: 1rem;
+
+          .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+
+            &.btn--primary {
+              background: var(--color-primary-400);
+              color: white;
+              border: 2px solid var(--color-primary-400);
+
+              &:hover {
+                background: transparent;
+                color: var(--color-primary-400);
+              }
+            }
+
+            &.btn--secondary {
+              background: transparent;
+              color: var(--color-light-50);
+              border: 2px solid var(--color-light-50);
+
+              &:hover {
+                background: var(--color-light-50);
+                color: var(--color-background);
+              }
+            }
+          }
+        }
+      }
+
+      &:hover {
+        img {
+          transform: scale(1.05);
+        }
+
+        .project-card__overlay {
+          opacity: 1;
+        }
+      }
+    }
+
+    .project-card__content {
+      padding: 1.5rem;
+
+      .project-card__title {
+        color: var(--color-light-50);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .project-card__description {
+        color: var(--color-light-300);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+      }
+
+      .project-card__technologies {
+        .technologies-label {
+          color: var(--color-primary-300);
+          font-weight: 500;
+          font-size: 0.9rem;
+          margin-bottom: 0.5rem;
+          display: block;
+        }
+
+        .technologies-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+
+          .technology-tag {
+            background: var(--color-primary-400);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}

@@ -54,6 +54,15 @@ export const AdapterLanguage: { [key in TypeLanguage]: ITranslate } = {
       validateFormatEmailEmal: 'El correo electrónico es inválido',
       validateRequiredMessage: 'El mensaje es requerido',
     },
+    masterProjects: {
+      title: 'Proyectos Destacados',
+      description: 'Algunos de los proyectos en los que he trabajado recientemente',
+      viewProject: 'Ver Proyecto',
+      viewCode: 'Ver Código',
+      technologies: 'Tecnologías',
+      featured: 'Destacado',
+      noProjects: 'No hay proyectos disponibles',
+    },
     masterFooter: {
       descriptionDesign: 'Diseño inspirado por',
       descriptionDevelopment: 'Desarrollo',
@@ -115,6 +124,15 @@ export const AdapterLanguage: { [key in TypeLanguage]: ITranslate } = {
       validateRequiredEmail: 'Email is required',
       validateFormatEmailEmal: 'Email is invalid',
       validateRequiredMessage: 'Message is required',
+    },
+    masterProjects: {
+      title: 'Featured Projects',
+      description: 'Some of the projects I have been working on recently',
+      viewProject: 'View Project',
+      viewCode: 'View Code',
+      technologies: 'Technologies',
+      featured: 'Featured',
+      noProjects: 'No projects available',
     },
     masterFooter: {
       descriptionDesign: 'Design inspired by',

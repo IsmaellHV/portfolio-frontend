@@ -11,6 +11,7 @@ export interface ITranslate {
   masterHome: IMasterHome;
   masterAbout: IMasterAbout;
   masterContact: IMasterContact;
+  masterProjects: IMasterProjects;
   masterFooter: IMasterFooter;
 }
 
@@ -56,6 +57,16 @@ interface IMasterContact {
   validateRequiredEmail: string;
   validateFormatEmailEmal: string;
   validateRequiredMessage: string;
+}
+
+interface IMasterProjects {
+  title: string;
+  description: string;
+  viewProject: string;
+  viewCode: string;
+  technologies: string;
+  featured: string;
+  noProjects: string;
 }
 
 interface IMasterFooter {
