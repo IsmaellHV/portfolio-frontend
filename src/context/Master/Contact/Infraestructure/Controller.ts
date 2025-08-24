@@ -6,6 +6,8 @@ import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 import { RootState } from '../../../shared/Infraestructure/AdapterStore';
 import { AdapterValidator } from '../../../shared/Infraestructure/AdapterValidator';
+import { AdapterSupabase } from '../../../shared/Infraestructure/AdapterSupabase';
+import { EntityContactMessage } from '../../../shared/Domain/db/EntityContactMessage';
 import { addLoading, removeLoading } from '../../../shared/Infraestructure/SliceGeneric';
 import { IFormContactValues } from '../Domain/IFormContact';
 import { PropsView } from '../Domain/PropsView';
@@ -69,15 +71,26 @@ export const Controller = (): PropsView => {
       if (!recaptcha) throw new Error('Not valid captcha');
 
       dispatch(addLoading('Loading...'));
+      
+      // Guardar mensaje en Supabase
+      const contactMessage: EntityContactMessage = {
+        name: formContact.values.name,
+        email: formContact.values.email,
+        message: formContact.values.message,
+        read: false,
+        created_at: new Date().toISOString()
+      };
+      
+      await AdapterSupabase.insertData('contact_messages', contactMessage);
+      
       alert('Message sent', { okButtonText: 'Ok' });
-      //grabar
       turnstile.reset();
       onChangeRecaptcha('');
-      dispatch(removeLoading());
       formContact.resetForm();
     } catch (error) {
       alert((error as Error).message, { okButtonText: 'Ok' });
     } finally {
+      dispatch(removeLoading());
       setIsSubmitting(false);
     }
   };

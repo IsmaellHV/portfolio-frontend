@@ -159,5 +159,13 @@ export default defineConfig(() => {
         '@node_modules': path.resolve(__dirname, './node_modules'),
       },
     },
+    assetsInclude: ['**/*.webp', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+    server: {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    },
   };
 });

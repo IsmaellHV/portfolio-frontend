@@ -101,6 +101,19 @@ interface IEnvironment {
   };
 }
 
+// Extender la interfaz ImportMetaEnv para incluir las variables de Supabase
+declare global {
+  interface ImportMetaEnv {
+    readonly VITE_ENV: string;
+    readonly VITE_VAR_SUPABASE_URL: string;
+    readonly VITE_VAR_SUPABASE_ANON_KEY: string;
+  }
+
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
+}
+
 export const ENVIRONMENT: IEnvironment = {
   ENV: import.meta.env.VITE_ENV || '',
 

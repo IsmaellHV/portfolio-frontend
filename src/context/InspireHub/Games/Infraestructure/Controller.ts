@@ -30,9 +30,18 @@ export const Controller = (): PropsView => {
   //#endregion
 
   //# region Data Scores
-  const getDataScores = async () => {
-    const response: IScore[] = await AdapterSupabase.fetchData('tetris_scores');
-    return response;
+  const getDataScores = async (): Promise<IScore[]> => {
+    try {
+      const response = await AdapterSupabase.fetchData('tetris_scores');
+      // Si la respuesta es null o un array de errores, retornar array vacío
+      if (!response || !Array.isArray(response)) {
+        return [];
+      }
+      return response as unknown as IScore[];
+    } catch (error) {
+      console.error('Error fetching scores:', error);
+      return [];
+    }
   };
   // #endregion
 

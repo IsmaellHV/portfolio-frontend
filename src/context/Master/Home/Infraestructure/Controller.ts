@@ -5,6 +5,8 @@ import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 import { AdapterGeneric } from '../../../shared/Infraestructure/AdapterGeneric';
 import { AdapterValidator } from '../../../shared/Infraestructure/AdapterValidator';
+import { AdapterSupabase } from '../../../shared/Infraestructure/AdapterSupabase';
+import { EntityContactMessage } from '../../../shared/Domain/db/EntityContactMessage';
 import { addLoading, removeLoading } from '../../../shared/Infraestructure/SliceGeneric';
 import { IFormContactValues } from '../Domain/IFormContact';
 import { PropsView } from '../Domain/PropsView';
@@ -69,16 +71,26 @@ export const Controller = (): PropsView => {
       if (!recaptcha) throw new Error('Not valid captcha');
 
       dispatch(addLoading('Loading...'));
+      
+      // Guardar mensaje en Supabase
+      const contactMessage: EntityContactMessage = {
+        name: formContact.values.name,
+        email: formContact.values.email,
+        message: formContact.values.message,
+        read: false,
+        created_at: new Date().toISOString()
+      };
+      
+      await AdapterSupabase.insertData('contact_messages', contactMessage);
+      
       AdapterGeneric.createToast({ message: 'Message sent', icon: 'success' });
-
-      //grabar
       turnstile.reset();
       onChangeRecaptcha('');
-      dispatch(removeLoading());
       formContact.resetForm();
     } catch (error) {
       AdapterGeneric.createToast({ message: (error as Error).message, icon: 'error' });
     } finally {
+      dispatch(removeLoading());
       setIsSubmitting(false);
     }
   };

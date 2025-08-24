@@ -124,11 +124,51 @@
     }
 
     .photo {
-      height: 300px;
-      place-content: center;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto;
+      margin-bottom: 20px;
+      position: relative;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      background-color: var(--color-light-300);
+      
+      // Prevenir parpadeo y mejorar estabilidad
+      will-change: auto;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.3s ease-in-out;
+        
+        // Optimizaciones para prevenir parpadeo
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        
+        &:not([src]) {
+          opacity: 0;
+        }
+      }
+      
+      // Placeholder y estados de carga
+      > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 500;
+      }
     }
   }
 }

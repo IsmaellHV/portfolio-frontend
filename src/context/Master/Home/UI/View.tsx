@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { Button, Divider, Image, Panel, Stack } from 'rsuite';
+import { Button, Divider, Panel, Stack } from 'rsuite';
+import { useState } from 'react';
 import photo from '../../../../assets/img/profile.webp';
 import { ENVIRONMENT } from '../../../../env';
 import { InputForm } from '../../../shared/Components/Element/InputForm/View';
@@ -17,6 +18,8 @@ import './Style.scss';
 export const View = (props: PropsView) => {
   const navigate: NavigateFunction = useNavigate();
   const language = useSelector((state: RootState) => state.language);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleGo = (route: string) => {
     navigate(route, { replace: true });
@@ -156,7 +159,58 @@ export const View = (props: PropsView) => {
           </div>
 
           <div className="photo">
-            <Image circle src={photo} alt="Foto de perfil de Ismael Hurtado" width={160} />
+            {!imageLoaded && !imageError && (
+              <div 
+                style={{ 
+                  width: 160, 
+                  height: 160, 
+                  borderRadius: '50%', 
+                  backgroundColor: 'var(--color-light-300)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: 'var(--color-background)'
+                }}
+              >
+                Cargando...
+              </div>
+            )}
+            <img 
+              src={photo} 
+              alt="Foto de perfil de Ismael Hurtado" 
+              width={160} 
+              height={160}
+              style={{ 
+                borderRadius: '50%', 
+                objectFit: 'cover',
+                display: imageLoaded ? 'block' : 'none'
+              }}
+              onLoad={() => {
+                setImageLoaded(true);
+                setImageError(false);
+              }}
+              onError={() => {
+                setImageError(true);
+                setImageLoaded(false);
+              }}
+            />
+            {imageError && (
+              <div 
+                style={{ 
+                  width: 160, 
+                  height: 160, 
+                  borderRadius: '50%', 
+                  backgroundColor: 'var(--color-light-300)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: 'var(--color-background)',
+                  fontSize: '12px'
+                }}
+              >
+                Error al cargar imagen
+              </div>
+            )}
           </div>
         </section>
       </section>

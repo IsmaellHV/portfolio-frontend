@@ -24,10 +24,10 @@ export const NavBar = () => {
   const navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
-    AdapterSupabase.getUser().then((respUser: User | null) => {
-      console.log({ respUser });
+    AdapterSupabase.getUser().then((response) => {
+      console.log({ response });
 
-      dispatch(setUser({ user: !respUser?.id ? null : respUser }));
+      dispatch(setUser({ user: !response.user?.id ? null : response.user }));
     });
   }, []);
 
