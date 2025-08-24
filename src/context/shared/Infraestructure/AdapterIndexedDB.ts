@@ -5,7 +5,8 @@ export class AdapterIndexedDB {
   private name: string;
   private version: number;
   private stores: Array<{ name: string; pk: string; index: Array<{ key: string; unique: boolean }>; encrpyt: boolean }>;
-  private online: boolean = false;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private _online: boolean = false;
 
   constructor(name: string, version: number, stores: Array<{ name: string; pk: string; index: Array<{ key: string; unique: boolean }>; encrpyt: boolean }>) {
     this.name = name;
@@ -19,7 +20,7 @@ export class AdapterIndexedDB {
 
       req.onsuccess = () => {
         this.version = req.result.version;
-        this.online = true;
+        this._online = true;
         resolve(true);
       };
 
@@ -51,7 +52,7 @@ export class AdapterIndexedDB {
     return new Promise((resolve, reject) => {
       const req = indexedDB.deleteDatabase(this.name);
       req.onsuccess = () => {
-        this.online = false;
+        this._online = false;
         resolve(true);
       };
       req.onerror = () => {

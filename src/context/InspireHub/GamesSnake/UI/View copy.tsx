@@ -9,7 +9,7 @@ const initialSnake = [{ x: 10, y: 10 }];
 const initialFood = { x: Math.floor(Math.random() * BOARD_SIZE), y: Math.floor(Math.random() * BOARD_SIZE) };
 
 //eslint-disable-next-line
-export const View = (props: PropsView) => {
+export const View = (_props: PropsView) => {
   const [snake, setSnake] = useState(initialSnake);
   const [food, setFood] = useState(initialFood);
   const [direction, setDirection] = useState('RIGHT');

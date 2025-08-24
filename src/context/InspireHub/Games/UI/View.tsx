@@ -20,7 +20,7 @@ export const View = (props: PropsView) => {
     setLimit(dataKey);
   };
 
-  const data = props.dataScores.filter((v: IScore, i: number) => {
+  const data = props.dataScores.filter((_v: IScore, i: number) => {
     const start = limit * (page - 1);
     const end = start + limit;
     return i >= start && i < end;

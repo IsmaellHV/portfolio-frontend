@@ -10,23 +10,23 @@ export const Controller = (): PropsView => {
   //#region VARIABLES GLOBAL
 
   //eslint-disable-next-line
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [score, setScore] = useState<number>(0);
+  const [isPlaying, _setIsPlaying] = useState(false);
+  const [_gameOver, _setGameOver] = useState(false);
+  const [_score, _setScore] = useState<number>(0);
   //eslint-disable-next-line
-  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [_timeElapsed, _setTimeElapsed] = useState(0);
 
   const [snake, setSnake] = useState(initialSnake);
   const [food, setFood] = useState(initialFood);
   const [direction, setDirection] = useState('RIGHT');
 
   useSEO({
-    title: `[${score.toString()}] Snake Game`,
+    title: `[${_score.toString()}] Snake Game`,
     description: 'Snake game made with React',
   });
 
   //eslint-disable-next-line
-  const boardRef = useRef(null);
+  const _boardRef = useRef(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const moveSnake = () => {
     const newSnake = [...snake];
@@ -56,13 +56,13 @@ export const Controller = (): PropsView => {
         x: Math.floor(Math.random() * BOARD_SIZE),
         y: Math.floor(Math.random() * BOARD_SIZE),
       });
-      setScore(score + 1);
+      _setScore(_score + 1);
     } else {
       newSnake.pop();
     }
 
     if (head.x < 0 || head.y < 0 || head.x >= BOARD_SIZE || head.y >= BOARD_SIZE || newSnake.slice(1).some((segment) => segment.x === head.x && segment.y === head.y)) {
-      setGameOver(true);
+      _setGameOver(true);
       return;
     }
 
@@ -113,10 +113,10 @@ export const Controller = (): PropsView => {
   }, [direction]);
 
   useEffect(() => {
-    if (gameOver) return;
+    if (_gameOver) return;
     const interval = setInterval(moveSnake, 200);
     return () => clearInterval(interval);
-  }, [snake, direction, gameOver]);
+  }, [snake, direction, _gameOver]);
 
   //#endregion
 
@@ -130,9 +130,9 @@ export const Controller = (): PropsView => {
     end,
     init,
     isPlaying,
-    gameOver,
-    score,
-    timeElapsed,
+    gameOver: _gameOver,
+    score: _score,
+    timeElapsed: _timeElapsed,
     handleButtonPress,
   };
   //#endregion

@@ -9,10 +9,11 @@ type TypeResponseService = 'json' | 'text' | 'blob';
 type TypeAuthService = 'basic' | 'basicFiles' | 'bearer';
 
 export class AdapterService {
-  private dispatch: Dispatch;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private _dispatch!: Dispatch;
 
   constructor(dispatch: Dispatch) {
-    this.dispatch = dispatch;
+    this._dispatch = dispatch;
   }
 
   public async call<T>(method: TypeMethodService = 'GET', url: string, body: string | FormData | undefined, auth: TypeAuthService, typeRequest: TypeRequestService = 'json', typeResponse: TypeResponseService = 'json', adicionalHeaders: object, tries: number = 2): Promise<Array<T> | T | null> {

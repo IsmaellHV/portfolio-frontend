@@ -7,5 +7,6 @@
 @use 'utilities/_helpers';
 @use 'utilities/_responsive';
 
+@use 'ErrorBoundary';
 @use 'vendors/_rsuite-overrides';
 @import 'rsuite/dist/rsuite.min.css';

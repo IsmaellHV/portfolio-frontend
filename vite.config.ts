@@ -35,19 +35,19 @@ export default defineConfig(({ command }) => {
               }),
             ]
           : [],
-        // output: {
-        //   manualChunks: (id) => {
-        //     if (id.includes('node_modules')) {
-        //       if (id.includes('react')) return 'react-vendor';
-        //       if (id.includes('react-dom')) return 'react-dom-vendor';
-        //       if (id.includes('rsuite')) return 'rsuite-vendor';
-        //       if (id.includes('primereact')) return 'primereact-vendor';
-        //       if (id.includes('three')) return 'three-vendor';
-        //       if (id.includes('gsap')) return 'gsap-vendor';
-        //       return 'vendor';
-        //     }
-        //   },
-        // },
+        output: {
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('react')) return 'react-vendor';
+              if (id.includes('react-dom')) return 'react-dom-vendor';
+              if (id.includes('rsuite')) return 'rsuite-vendor';
+              if (id.includes('primereact')) return 'primereact-vendor';
+              if (id.includes('three')) return 'three-vendor';
+              if (id.includes('gsap')) return 'gsap-vendor';
+              return 'vendor';
+            }
+          },
+        },
       },
     },
     resolve: {

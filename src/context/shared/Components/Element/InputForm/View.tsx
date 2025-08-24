@@ -84,7 +84,7 @@ export const InputForm = ({ xs, sm, md, lg, xl, xxl, size = 'sm', name, type = '
           minLength={minLength}
           min={min}
           max={max}
-          onChange={(params: string, e: React.ChangeEvent<HTMLInputElement>) => {
+          onChange={(_params: string, e: React.ChangeEvent<HTMLInputElement>) => {
             let value: any = e.target.validity.valid ? (upper ? e.target.value.toUpperCase() : e.target.value) : null;
             value = e.target.files?.length ? e.target.files : value;
             onChange && onChange(name, value);
