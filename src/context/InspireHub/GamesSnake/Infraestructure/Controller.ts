@@ -25,7 +25,7 @@ export const Controller = (): PropsView => {
     description: 'Snake game made with React',
   });
 
-  //eslint-disable-next-line
+   
   const _boardRef = useRef(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const moveSnake = () => {

@@ -5,48 +5,152 @@ import obfuscatorPlugin from 'rollup-plugin-javascript-obfuscator';
 
 export default defineConfig(({ command }) => {
   const isBuild = command === 'build';
+  const isProduction = process.env.NODE_ENV === 'production';
 
   return {
     plugins: [react()],
     build: {
       cssCodeSplit: true,
       minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true,
-        },
-        mangle: {
-          keep_classnames: false,
-          keep_fnames: false,
-        },
-        output: {
-          comments: false,
-        },
-      },
       sourcemap: false,
       chunkSizeWarningLimit: 1000,
+      terserOptions: {
+        compress: {
+          drop_console: isProduction,
+          drop_debugger: isProduction,
+          pure_funcs: isProduction ? ['console.log', 'console.info', 'console.debug'] : [],
+          passes: 2
+        },
+        mangle: {
+          safari10: true,
+          keep_fnames: false,
+          reserved: ['$', 'exports', 'require']
+        },
+        format: {
+          comments: false,
+          ascii_only: true
+        }
+      },
       rollupOptions: {
-        plugins: isBuild
-          ? [
-              obfuscatorPlugin({
-                compact: true,
-                controlFlowFlattening: true,
-              }),
-            ]
-          : [],
+        plugins: [
+          ...(isProduction ? [
+            obfuscatorPlugin({
+              compact: true,
+              controlFlowFlattening: true,
+              controlFlowFlatteningThreshold: 0.75,
+              deadCodeInjection: true,
+              deadCodeInjectionThreshold: 0.4,
+              debugProtection: false,
+              debugProtectionInterval: 0,
+              disableConsoleOutput: true,
+              identifierNamesGenerator: 'hexadecimal',
+              log: false,
+              numbersToExpressions: true,
+              renameGlobals: false,
+              selfDefending: true,
+              simplify: true,
+              splitStrings: true,
+              splitStringsChunkLength: 10,
+              stringArray: true,
+              stringArrayCallsTransform: true,
+              stringArrayEncoding: ['base64'],
+              stringArrayIndexShift: true,
+              stringArrayRotate: true,
+              stringArrayShuffle: true,
+              stringArrayWrappersCount: 2,
+              stringArrayWrappersChainedCalls: true,
+              stringArrayWrappersParametersMaxCount: 4,
+              stringArrayWrappersType: 'function',
+              stringArrayThreshold: 0.75,
+              transformObjectKeys: true,
+              unicodeEscapeSequence: false,
+              reservedNames: [
+                '^React',
+                '^ReactDOM',
+                '^__vite',
+                '^import',
+                '^export',
+                '^require',
+                '^module',
+                '^global',
+                '^window',
+                '^document'
+              ]
+            })
+          ] : [])
+        ],
+        external: [
+           'chart.js/auto', 
+           'quill'
+         ],
         output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('react')) return 'react-vendor';
-              if (id.includes('react-dom')) return 'react-dom-vendor';
-              if (id.includes('rsuite')) return 'rsuite-vendor';
-              if (id.includes('primereact')) return 'primereact-vendor';
-              if (id.includes('three')) return 'three-vendor';
-              if (id.includes('gsap')) return 'gsap-vendor';
-              return 'vendor';
-            }
-          },
+          manualChunks: {
+            // React Core
+            'react-vendor': ['react', 'react-dom'],
+            
+            // UI Libraries
+             'ui-vendor': [
+               'rsuite',
+               '@rsuite/icons',
+               '@rsuite/interactions'
+             ],
+            
+            // Icons
+            'icons-vendor': [
+              '@fortawesome/react-fontawesome',
+              '@fortawesome/fontawesome-svg-core',
+              '@fortawesome/free-solid-svg-icons',
+              '@fortawesome/free-regular-svg-icons',
+              '@fortawesome/free-brands-svg-icons',
+              'lucide-react'
+            ],
+            
+            // State Management & Routing
+            'state-vendor': [
+              '@reduxjs/toolkit',
+              'react-redux',
+              'redux',
+              'react-router-dom'
+            ],
+            
+            // Animation Libraries
+            'animation-vendor': [
+              'framer-motion',
+              'gsap',
+              'react-transition-group'
+            ],
+            
+            // 3D Libraries
+            'three-vendor': [
+              'three',
+              '@react-three/fiber',
+              '@react-three/drei'
+            ],
+            
+            // Form & Validation
+            'form-vendor': [
+              'formik',
+              'yup'
+            ],
+            
+            // Utilities
+            'utils-vendor': [
+              'crypto-js',
+              'buffer',
+              'react-helmet',
+              'react-responsive',
+              'react-scroll',
+              'sweetalert2',
+              'sonner',
+              'ldrs'
+            ],
+            
+            // External Services
+             'services-vendor': [
+               '@supabase/supabase-js',
+               'react-turnstile'
+             ]
+          }
         },
       },
     },

@@ -5,7 +5,7 @@ export class AdapterIndexedDB {
   private name: string;
   private version: number;
   private stores: Array<{ name: string; pk: string; index: Array<{ key: string; unique: boolean }>; encrpyt: boolean }>;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   private _online: boolean = false;
 
   constructor(name: string, version: number, stores: Array<{ name: string; pk: string; index: Array<{ key: string; unique: boolean }>; encrpyt: boolean }>) {

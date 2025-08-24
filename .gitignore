@@ -127,3 +127,6 @@ Desktop.ini
 TODO.md
 NOTES.md
 *.personal.*
+.vercelignore
+vercel.json
+vercel.env

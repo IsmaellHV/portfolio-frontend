@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@fontsource-variable/onest": "^5.1.0",
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
@@ -94,6 +95,7 @@
     "prettier": "^3.3.3",
     "rollup-plugin-javascript-obfuscator": "^1.0.4",
     "sass": "^1.83.4",
+    "terser": "^5.43.1",
     "turnstile-types": "^1.2.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.10.0",

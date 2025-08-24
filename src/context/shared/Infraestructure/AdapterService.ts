@@ -9,7 +9,7 @@ type TypeResponseService = 'json' | 'text' | 'blob';
 type TypeAuthService = 'basic' | 'basicFiles' | 'bearer';
 
 export class AdapterService {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   private _dispatch!: Dispatch;
 
   constructor(dispatch: Dispatch) {
