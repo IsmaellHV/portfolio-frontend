@@ -1,4 +1,15 @@
-import { faCloudflare, faDigitalOcean, faDocker, faGithub, faJs, faLinkedinIn, faNodeJs, faPython, faReact, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import {
+  faCloudflare,
+  faDigitalOcean,
+  faDocker,
+  faGithub,
+  faJs,
+  faLinkedinIn,
+  faNodeJs,
+  faPython,
+  faReact,
+  faXTwitter,
+} from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Helmet } from 'react-helmet';
@@ -14,42 +25,6 @@ import { SocialPill } from '../../../shared/Components/Element/SocialPill/View';
 import { RootState } from '../../../shared/Infraestructure/AdapterStore';
 import { PropsView } from '../Domain/PropsView';
 import './Style.scss';
-
-// Sample projects data
-const sampleProjects = [
-  {
-    title: 'E-commerce Platform',
-    description: 'Una plataforma de comercio electrónico completa con carrito de compras, pagos y gestión de inventario.',
-    image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20ecommerce%20website%20interface%20clean%20design%20shopping%20cart%20product%20grid&image_size=landscape_4_3',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    demoUrl: 'https://demo-ecommerce.example.com',
-    codeUrl: 'https://github.com/example/ecommerce-platform'
-  },
-  {
-    title: 'Task Management App',
-    description: 'Aplicación de gestión de tareas con funcionalidades de colaboración en tiempo real y seguimiento de proyectos.',
-    image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=task%20management%20dashboard%20kanban%20board%20modern%20ui%20productivity%20app&image_size=landscape_4_3',
-    technologies: ['Vue.js', 'Express', 'Socket.io', 'PostgreSQL'],
-    demoUrl: 'https://demo-taskmanager.example.com',
-    codeUrl: 'https://github.com/example/task-manager'
-  },
-  {
-    title: 'Weather Dashboard',
-    description: 'Dashboard meteorológico con pronósticos detallados, mapas interactivos y alertas personalizadas.',
-    image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=weather%20dashboard%20interface%20charts%20maps%20forecast%20modern%20design&image_size=landscape_4_3',
-    technologies: ['React', 'TypeScript', 'Chart.js', 'OpenWeather API'],
-    demoUrl: 'https://demo-weather.example.com',
-    codeUrl: 'https://github.com/example/weather-dashboard'
-  },
-  {
-    title: 'Social Media Analytics',
-    description: 'Herramienta de análisis de redes sociales con métricas avanzadas y reportes automatizados.',
-    image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=social%20media%20analytics%20dashboard%20charts%20graphs%20data%20visualization&image_size=landscape_4_3',
-    technologies: ['Angular', 'Python', 'D3.js', 'Redis'],
-    demoUrl: 'https://demo-analytics.example.com',
-    codeUrl: 'https://github.com/example/social-analytics'
-  }
-];
 
 export const View = (props: PropsView) => {
   const navigate: NavigateFunction = useNavigate();
@@ -136,7 +111,10 @@ export const View = (props: PropsView) => {
           </header>
           <section>
             <h1 className="name text-break">{ENVIRONMENT.INFO.NAME}</h1>
-            <h2 className="description-secondary fw-400 " dangerouslySetInnerHTML={{ __html: language.masterHome.description || '' }}></h2>
+            <h2
+              className="description-secondary fw-400 "
+              dangerouslySetInnerHTML={{ __html: language.masterHome.description || '' }}
+            ></h2>
             <nav className="social-pills ">
               <SocialPill title={'Linkedin'} href={ENVIRONMENT.META.IN_URL}>
                 <FontAwesomeIcon icon={faLinkedinIn} />
@@ -151,7 +129,11 @@ export const View = (props: PropsView) => {
                 <FontAwesomeIcon icon={faEnvelope} />
               </SocialPill>
             </nav>
-            <Button className="btn-animation-shadow text-break" title={language.masterHome.buttonInspireHub} onClick={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUB)}>
+            <Button
+              className="btn-animation-shadow text-break"
+              title={language.masterHome.buttonInspireHub}
+              onClick={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUB)}
+            >
               {language.masterHome.buttonInspireHub}
             </Button>
           </section>
@@ -165,7 +147,10 @@ export const View = (props: PropsView) => {
         </header>
         <section className="info">
           <div>
-            <div className="description fw-400 mb-10" dangerouslySetInnerHTML={{ __html: language.masterAbout.description || '' }}></div>
+            <div
+              className="description fw-400 mb-10"
+              dangerouslySetInnerHTML={{ __html: language.masterAbout.description || '' }}
+            ></div>
             <nav className="social-pills">
               <SocialPill title={'Node.js'} href="#">
                 <FontAwesomeIcon icon={faNodeJs} />
@@ -196,30 +181,30 @@ export const View = (props: PropsView) => {
 
           <div className="photo">
             {!imageLoaded && !imageError && (
-              <div 
-                style={{ 
-                  width: 160, 
-                  height: 160, 
-                  borderRadius: '50%', 
-                  backgroundColor: 'var(--color-light-300)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+              <div
+                style={{
+                  width: 160,
+                  height: 160,
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--color-light-300)',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--color-background)'
+                  color: 'var(--color-background)',
                 }}
               >
                 Cargando...
               </div>
             )}
-            <img 
-              src={photo} 
-              alt="Foto de perfil de Ismael Hurtado" 
-              width={160} 
+            <img
+              src={photo}
+              alt="Foto de perfil de Ismael Hurtado"
+              width={160}
               height={160}
-              style={{ 
-                borderRadius: '50%', 
+              style={{
+                borderRadius: '50%',
                 objectFit: 'cover',
-                display: imageLoaded ? 'block' : 'none'
+                display: imageLoaded ? 'block' : 'none',
               }}
               onLoad={() => {
                 setImageLoaded(true);
@@ -231,17 +216,17 @@ export const View = (props: PropsView) => {
               }}
             />
             {imageError && (
-              <div 
-                style={{ 
-                  width: 160, 
-                  height: 160, 
-                  borderRadius: '50%', 
-                  backgroundColor: 'var(--color-light-300)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+              <div
+                style={{
+                  width: 160,
+                  height: 160,
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--color-light-300)',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   color: 'var(--color-background)',
-                  fontSize: '12px'
+                  fontSize: '12px',
                 }}
               >
                 Error al cargar imagen
@@ -355,48 +340,6 @@ export const View = (props: PropsView) => {
             </Panel>
           </section>
         </section>
-      </section>
-
-      {/* PROJECTS */}
-      <section id="projects" className="projects">
-        <div className="projects__container">
-          <div className="projects__header">
-            <h2 className="projects__title">{language.masterProjects.title}</h2>
-            <p className="projects__description">{language.masterProjects.description}</p>
-          </div>
-          
-          <div className="projects__grid">
-            {sampleProjects.map((project, index) => (
-              <div key={index} className="project-card">
-                <div className="project-card__image">
-                  <img src={project.image} alt={project.title} />
-                  <div className="project-card__overlay">
-                    <div className="project-card__actions">
-                      <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn--primary">
-                        {language.masterProjects.viewProject}
-                      </a>
-                      <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" className="btn btn--secondary">
-                        {language.masterProjects.viewCode}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="project-card__content">
-                  <h3 className="project-card__title">{project.title}</h3>
-                  <p className="project-card__description">{project.description}</p>
-                  <div className="project-card__technologies">
-                    <span className="technologies-label">{language.masterProjects.technologies}:</span>
-                    <div className="technologies-list">
-                      {project.technologies.map((tech, techIndex) => (
-                        <span key={techIndex} className="technology-tag">{tech}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* FOOTER */}
