@@ -1,4 +1,3 @@
-import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Helmet } from 'react-helmet';
@@ -80,32 +79,6 @@ export const View = (props: PropsView) => {
           <p className="register-link">
             Don't have an account? <a href="/register">Sign Up</a>
           </p>
-
-          <div className="social-login">
-            <p>Or login with</p>
-            <Button
-              className="google-btn btn-animation-shadow"
-              disabled={!props.recaptcha || props.isSubmitting}
-              loading={props.isSubmitting}
-              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                props.onSubmitLoginGithub(e);
-              }}
-            >
-              <FontAwesomeIcon icon={faGoogle} />
-              &nbsp;Google
-            </Button>
-            <Button
-              className="github-btn btn-animation-shadow"
-              disabled={!props.recaptcha || props.isSubmitting}
-              loading={props.isSubmitting}
-              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                props.onSubmitLoginGithub(e);
-              }}
-            >
-              <FontAwesomeIcon icon={faGithub} />
-              &nbsp;GitHub
-            </Button>
-          </div>
 
           <div className="recaptcha">
             <Turnstile
