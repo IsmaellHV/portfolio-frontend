@@ -31,9 +31,9 @@
       gap: 8px;
 
       .title-icon {
-        width: 18px;
-        height: 18px;
-        color: var(--g-accent-memory);
+        width: 16px;
+        height: 16px;
+        color: var(--g-muted);
       }
     }
 
@@ -90,9 +90,9 @@
       gap: 12px;
 
       .stat-icon {
-        width: 18px;
-        height: 18px;
-        color: var(--g-accent-memory);
+        width: 16px;
+        height: 16px;
+        color: var(--g-muted);
       }
 
       .stat-content {
@@ -108,17 +108,26 @@
 
   .memory-board {
     display: grid;
-    gap: 8px;
-    padding: 8px;
+    gap: 6px;
+    padding: 6px;
     background: var(--g-surface);
     border: 1px solid var(--g-border-strong);
     border-radius: var(--g-radius);
-    width: 100%;
-    max-width: 700px;
+    width: fit-content;
+    max-width: 100%;
+
+    &.easy { grid-template-columns: repeat(4, 72px) !important; grid-template-rows: repeat(4, 72px) !important; }
+    &.medium { grid-template-columns: repeat(6, 72px) !important; grid-template-rows: repeat(4, 72px) !important; }
+    &.hard { grid-template-columns: repeat(8, 64px) !important; grid-template-rows: repeat(4, 64px) !important; }
+
+    @media (max-width: 768px) {
+      &.easy { grid-template-columns: repeat(4, 60px) !important; grid-template-rows: repeat(4, 60px) !important; }
+      &.medium { grid-template-columns: repeat(6, 50px) !important; grid-template-rows: repeat(4, 50px) !important; }
+      &.hard { grid-template-columns: repeat(8, 42px) !important; grid-template-rows: repeat(4, 42px) !important; }
+    }
   }
 
   .memory-card {
-    aspect-ratio: 1;
     cursor: pointer;
     perspective: 800px;
 

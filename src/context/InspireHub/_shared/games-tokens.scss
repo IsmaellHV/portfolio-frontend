@@ -42,11 +42,11 @@
 }
 
 @mixin g-shell {
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - var(--header-height, 60px));
   background: var(--g-bg);
   color: var(--g-fg);
   font-family: var(--g-mono);
-  padding: var(--g-pad-lg) var(--g-pad);
+  padding: calc(var(--header-height, 60px) + var(--breadcrumb-height, 40px) + var(--g-pad)) var(--g-pad) var(--g-pad-lg);
   display: flex;
   flex-direction: column;
   gap: var(--g-pad-lg);
