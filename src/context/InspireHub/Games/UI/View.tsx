@@ -4,6 +4,9 @@ import { Helmet } from 'react-helmet';
 import { Button, Card, Divider, Pagination, Stat, StatGroup, Table, Tabs, Text, Input, InputGroup, SelectPicker, Badge, Loader } from 'rsuite';
 import imgSnake from '../../../../assets/img/games/snake.webp';
 import imgTetris from '../../../../assets/img/games/tetris.webp';
+import imgPong from '../../../../assets/img/games/pong.svg';
+import img2048 from '../../../../assets/img/games/2048.svg';
+import imgMemory from '../../../../assets/img/games/memory.svg';
 import { ENVIRONMENT } from '../../../../env';
 import { PropsView } from '../Domain/PropsView';
 import './Style.scss';
@@ -80,7 +83,7 @@ export const View = (props: PropsView) => {
       id: 'pong',
       name: 'Pong',
       description: 'El clásico juego de ping pong. Controla tu paleta y vence a la IA en este juego retro.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=retro%20pong%20game%20with%20neon%20paddles%20and%20ball%20on%20dark%20background%2C%20minimalist%20design%2C%20glowing%20effects&image_size=square_hd',
+      image: imgPong,
       category: 'arcade',
       difficulty: 'Medium',
       players: gameStats.pong?.totalPlayers?.toString() || '0',
@@ -93,7 +96,7 @@ export const View = (props: PropsView) => {
       id: '2048',
       name: '2048',
       description: 'Combina números para llegar a 2048. Un juego de puzzle adictivo que desafía tu estrategia.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=2048%20game%20board%20with%20colorful%20number%20tiles%2C%20modern%20design%2C%20gradient%20background%2C%20mathematical%20puzzle%20game&image_size=square_hd',
+      image: img2048,
       category: 'puzzle',
       difficulty: 'Medium',
       players: gameStats.games2048?.totalPlayers?.toString() || '0',
@@ -106,7 +109,7 @@ export const View = (props: PropsView) => {
       id: 'memory',
       name: 'Memory',
       description: 'Pon a prueba tu memoria encontrando pares de cartas. Un juego clásico con diferentes niveles de dificultad.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=memory%20card%20game%20with%20colorful%20cards%20face%20down%2C%20some%20flipped%20showing%20cute%20emojis%2C%20modern%20design%2C%20brain%20training%20game&image_size=square_hd',
+      image: imgMemory,
       category: 'puzzle',
       difficulty: 'Easy',
       players: gameStats.gamesMemory?.totalPlayers?.toString() || '0',

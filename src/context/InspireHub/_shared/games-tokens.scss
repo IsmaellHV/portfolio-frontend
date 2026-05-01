@@ -3,27 +3,27 @@
 // Then reference vars or include the @mixin g.shell.
 
 [data-theme='light'] {
-  --g-bg: #fafafa;
+  --g-bg: #f4f4f5;
   --g-surface: #ffffff;
-  --g-fg: #18181b;
-  --g-muted: #71717a;
-  --g-border: #e4e4e7;
-  --g-border-strong: #d4d4d8;
-  --g-grid: #f4f4f5;
-  --g-overlay: rgba(255, 255, 255, 0.86);
-  --g-modal-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  --g-fg: #09090b;
+  --g-muted: #52525b;
+  --g-border: #d4d4d8;
+  --g-border-strong: #a1a1aa;
+  --g-grid: #e4e4e7;
+  --g-overlay: rgba(255, 255, 255, 0.92);
+  --g-modal-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 [data-theme='dark'] {
-  --g-bg: #09090b;
-  --g-surface: #18181b;
+  --g-bg: #0a0a0b;
+  --g-surface: #1c1c1f;
   --g-fg: #fafafa;
-  --g-muted: #a1a1aa;
-  --g-border: #27272a;
-  --g-border-strong: #3f3f46;
-  --g-grid: #18181b;
-  --g-overlay: rgba(9, 9, 11, 0.78);
-  --g-modal-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --g-muted: #d4d4d8;
+  --g-border: #3f3f46;
+  --g-border-strong: #52525b;
+  --g-grid: #27272a;
+  --g-overlay: rgba(10, 10, 11, 0.88);
+  --g-modal-shadow: 0 1px 2px rgba(255, 255, 255, 0.06);
 }
 
 // Per-game accent (kept neutral; pieces still use intrinsic palette where relevant).

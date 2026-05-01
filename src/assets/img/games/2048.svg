@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" role="img" aria-label="2048">
+  <rect width="400" height="225" fill="#0a0a0b"/>
+  <g transform="translate(110 32)">
+    <rect width="180" height="180" rx="6" fill="#18181b" stroke="#3f3f46"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="500" text-anchor="middle">
+      <rect x="8" y="8" width="38" height="38" rx="3" fill="#27272a"/>
+      <text x="27" y="33" font-size="14" fill="#a1a1aa">2</text>
+      <rect x="50" y="8" width="38" height="38" rx="3" fill="#3f3f46"/>
+      <text x="69" y="33" font-size="14" fill="#fafafa">4</text>
+      <rect x="92" y="8" width="38" height="38" rx="3" fill="#f97316" opacity="0.6"/>
+      <text x="111" y="33" font-size="14" fill="#0a0a0b">8</text>
+      <rect x="134" y="8" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="8" y="50" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="50" y="50" width="38" height="38" rx="3" fill="#f97316" opacity="0.85"/>
+      <text x="69" y="75" font-size="13" fill="#0a0a0b">16</text>
+      <rect x="92" y="50" width="38" height="38" rx="3" fill="#f97316"/>
+      <text x="111" y="75" font-size="13" fill="#0a0a0b">32</text>
+      <rect x="134" y="50" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="8" y="92" width="38" height="38" rx="3" fill="#fafafa"/>
+      <text x="27" y="117" font-size="12" fill="#0a0a0b">128</text>
+      <rect x="50" y="92" width="38" height="38" rx="3" fill="#fafafa"/>
+      <text x="69" y="117" font-size="12" fill="#0a0a0b">256</text>
+      <rect x="92" y="92" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="134" y="92" width="38" height="38" rx="3" fill="#fafafa" stroke="#f97316"/>
+      <text x="153" y="117" font-size="11" fill="#f97316">2048</text>
+      <rect x="8" y="134" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="50" y="134" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="92" y="134" width="38" height="38" rx="3" fill="#27272a"/>
+      <rect x="134" y="134" width="38" height="38" rx="3" fill="#27272a"/>
+    </g>
+  </g>
+</svg>
