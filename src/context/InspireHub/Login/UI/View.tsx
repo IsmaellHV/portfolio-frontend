@@ -1,21 +1,15 @@
 import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
 import { Button } from 'rsuite';
 import { ENVIRONMENT } from '../../../../env';
 import { InputForm } from '../../../shared/Components/Element/InputForm/View';
 import { IconLogo } from '../../../shared/Icons';
-import { RootState } from '../../../shared/Infraestructure/AdapterStore';
 import { PropsView } from '../Domain/PropsView';
 import './Style.scss';
 
 export const View = (props: PropsView) => {
-  const { themeLight } = useSelector((state: RootState) => state.generic);
-  const language = useSelector((state: RootState) => state.language);
-  const isScreen_480 = useMediaQuery({ maxWidth: 480 });
 
   return (
     <>
@@ -81,15 +75,7 @@ export const View = (props: PropsView) => {
           </p>
 
           <div className="recaptcha">
-            <Turnstile
-              //Recaptcha
-              sitekey={ENVIRONMENT.RECAPTCHA.KEY}
-              onVerify={props.onChangeRecaptcha}
-              size={isScreen_480 ? 'compact' : 'normal'}
-              action="login"
-              theme={themeLight ? 'light' : 'dark'}
-              language={language.code}
-            />
+            <Turnstile sitekey={ENVIRONMENT.RECAPTCHA.KEY} onVerify={props.onChangeRecaptcha} size="normal" action="submit" />
           </div>
         </div>
       </section>
