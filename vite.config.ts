@@ -124,7 +124,7 @@ export default defineConfig(() => {
             ],
 
             // External Services
-            'services-vendor': ['@supabase/supabase-js', 'react-turnstile'],
+            'services-vendor': ['react-turnstile'],
           },
         },
       },
