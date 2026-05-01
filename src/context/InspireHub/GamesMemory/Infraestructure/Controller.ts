@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { ENVIRONMENT } from '../../../../env';
 import { useSEO } from '../../../shared/Hook/useSEO';
-import { GameScoresService } from '../../../../lib/supabase';
+import { useScoreSaver } from '../../GameScores/UseScoreSaver';
 import { Card, PropsView } from '../Domain/PropsView';
 import { AdapterConfigure } from './AdapterConfigure';
 
@@ -20,8 +20,8 @@ const GRID_SIZES = {
 
 export const Controller = (): PropsView => {
   const navigate: NavigateFunction = useNavigate();
-  const gameScoresService = new GameScoresService();
-  
+  const scoreSaver = useScoreSaver();
+
   // Game state
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
@@ -203,19 +203,17 @@ export const Controller = (): PropsView => {
             localStorage.setItem(`memory-best-score-${difficulty}`, finalScore.toString());
           }
           
-          // Save to Supabase
-          GameScoresService.saveScore({
-            player_name: 'Player',
-            game_type: 'memory',
+          scoreSaver.save({
+            gameType: 'memory',
             score: finalScore,
-            level_or_lines: moves + 1,
+            levelOrLines: moves + 1,
             duration: time,
-            extra_data: {
+            extraData: {
               difficulty,
               moves: moves + 1,
               time,
-              perfect: moves + 1 === cards.length / 2
-            }
+              perfect: moves + 1 === cards.length / 2,
+            },
           });
         }
       } else {
@@ -230,7 +228,7 @@ export const Controller = (): PropsView => {
         }, 1000);
       }
     }
-  }, [gameStarted, isPaused, gameWon, gameOver, flippedCards, matchedCards, cards, time, moves, score, bestScore, difficulty, startGame, gameScoresService]);
+  }, [gameStarted, isPaused, gameWon, gameOver, flippedCards, matchedCards, cards, time, moves, score, bestScore, difficulty, startGame, scoreSaver]);
   
   // Handle difficulty change
   const handleSetDifficulty = useCallback((newDifficulty: 'easy' | 'medium' | 'hard') => {

@@ -1,62 +1,49 @@
 import { useState } from 'react';
-import { AdapterSupabase } from '../../../shared/Infraestructure/AdapterSupabase';
-import { PropsView } from '../Domain/PropsView';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { IScore } from '../Domain/IScore';
+import { PropsView } from '../Domain/PropsView';
+import { useGameScoresService } from '../../GameScores/UseGameScoresService';
 
 export const Controller = (): PropsView => {
-  //#region VARIABLES GLOBAL
   const navigate: NavigateFunction = useNavigate();
-  const [dataScores, setDataScores] = useState<any[]>([]);
-  //#endregion
+  const [dataScores, setDataScores] = useState<IScore[]>([]);
+  const gameScores = useGameScoresService();
 
-  //#region INICIALITATION
   const init = async () => {
-    const dataScores: IScore[] = await getDataScores();
-
-    dataScores.sort((a: IScore, b: IScore) => {
-      return b.score - a.score;
-    });
-
-    dataScores.forEach((item: IScore, index: number) => {
+    const scores = await getDataScores();
+    scores.sort((a, b) => b.score - a.score);
+    scores.forEach((item, index) => {
       item.i = index + 1;
-      item.created_at = new Date(item.created_at).toLocaleString();
     });
-
-    setDataScores(dataScores);
+    setDataScores(scores);
   };
 
   const end = async () => {};
-  //#endregion
 
-  //# region Data Scores
   const getDataScores = async (): Promise<IScore[]> => {
     try {
-      const response = await AdapterSupabase.fetchData('tetris_scores');
-      // Si la respuesta es null o un array de errores, retornar array vacío
-      if (!response || !Array.isArray(response)) {
-        return [];
-      }
-      return response as unknown as IScore[];
+      const response = await gameScores.getScores({ gameType: 'tetris', limit: 100 });
+      return response.map(row => ({
+        id: 0,
+        player_name: row.playerName,
+        score: row.score,
+        lines_cleared: row.levelOrLines,
+        created_at: new Date((row.registrar?.fecha as unknown as string) || Date.now()).toLocaleString(),
+      }));
     } catch (error) {
       console.error('Error fetching scores:', error);
       return [];
     }
   };
-  // #endregion
 
-  //#region Juegos
   const handleGo = (route: string) => {
     navigate(route, { replace: true });
   };
-  //#endregion
 
-  //#region EXPORT
   return {
     end,
     init,
     handleGo,
     dataScores,
   };
-  //#endregion
 };

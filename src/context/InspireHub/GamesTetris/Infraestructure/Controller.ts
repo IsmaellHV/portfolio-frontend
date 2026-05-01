@@ -5,9 +5,8 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import collisionSoundFile from '../../../../assets/audio/tetris-collision.mp3';
 import tetrisSoundFile from '../../../../assets/audio/tetris-porta.mp3';
-import { AdapterSupabase } from '../../../shared/Infraestructure/AdapterSupabase';
+import { useGameScoresService } from '../../GameScores/UseGameScoresService';
 import { IFormSaveOneValues } from '../Domain/IFormSaveOne';
-import { IScore } from '../Domain/IScore';
 import { PropsView } from '../Domain/PropsView';
 import { AdapterValidator } from '../../../shared/Infraestructure/AdapterValidator';
 import { AdapterGeneric } from '../../../shared/Infraestructure/AdapterGeneric';
@@ -20,6 +19,7 @@ export const Controller = (): PropsView => {
   const isScreen_768 = useMediaQuery({ maxWidth: 768 });
   const isScreen_992 = useMediaQuery({ maxWidth: 992 });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const gameScores = useGameScoresService();
 
   let BOARD_WIDTH, BOARD_HEIGHT;
 
@@ -198,14 +198,14 @@ export const Controller = (): PropsView => {
           return;
         }
 
-        const entityScore: IScore = {
-          player_name: formSaveOne.values['name'],
+        await gameScores.saveScore({
+          playerName: formSaveOne.values['name'],
+          gameType: 'tetris',
           score: score,
+          levelOrLines: lines,
           duration: timeElapsed,
-          lines_cleared: lines,
-        };
-
-        await AdapterSupabase.insertData('tetris_scores', entityScore);
+          extraData: null,
+        });
         AdapterGeneric.createToast({ message: 'Saved score', icon: 'success' });
         formSaveOne.resetForm();
       }

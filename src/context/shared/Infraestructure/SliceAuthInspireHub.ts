@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '@supabase/supabase-js';
+import { EntityUser } from '../../InspireHub/Auth/Domain/EntityUser';
 
 interface ISlice {
   auth: boolean;
-  user: User | null;
+  user: EntityUser | null;
 }
 
 const initialState: ISlice = {
@@ -15,7 +15,7 @@ const slice = createSlice({
   name: 'authInspireHub',
   initialState,
   reducers: {
-    signIn: (state, { payload }: PayloadAction<{ user: User | null }>) => {
+    signIn: (state, { payload }: PayloadAction<{ user: EntityUser | null }>) => {
       return {
         ...state,
         auth: true,
@@ -29,7 +29,7 @@ const slice = createSlice({
         user: null,
       };
     },
-    setUser: (state, { payload }: PayloadAction<{ user: User | null }>) => {
+    setUser: (state, { payload }: PayloadAction<{ user: EntityUser | null }>) => {
       return {
         ...state,
         auth: !!payload?.user,

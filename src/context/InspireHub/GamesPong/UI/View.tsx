@@ -83,88 +83,71 @@ export const View = (props: PropsView) => {
               viewBox={`0 0 ${gameWidth} ${gameHeight}`}
             >
               {/* Background */}
-              <rect 
-                width={gameWidth} 
-                height={gameHeight} 
-                fill="#1a1a2e" 
-                stroke="#16213e" 
-                strokeWidth="2"
+              <rect
+                width={gameWidth}
+                height={gameHeight}
+                fill="var(--g-surface)"
+                stroke="var(--g-border-strong)"
+                strokeWidth="1"
               />
-              
+
               {/* Center line */}
-              <line 
-                x1={gameWidth / 2} 
-                y1="0" 
-                x2={gameWidth / 2} 
-                y2={gameHeight} 
-                stroke="#16213e" 
-                strokeWidth="2" 
-                strokeDasharray="10,10"
+              <line
+                x1={gameWidth / 2}
+                y1="0"
+                x2={gameWidth / 2}
+                y2={gameHeight}
+                stroke="var(--g-border)"
+                strokeWidth="1"
+                strokeDasharray="4,8"
               />
-              
+
               {/* Left paddle (Player) */}
               <motion.rect
                 x="10"
                 y={paddle1Y}
                 width={paddleWidth}
                 height={paddleHeight}
-                fill="#00d4aa"
-                rx="2"
+                fill="var(--g-fg)"
+                rx="1"
                 animate={{ y: paddle1Y }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
-              
+
               {/* Right paddle (AI) */}
               <motion.rect
                 x={gameWidth - paddleWidth - 10}
                 y={paddle2Y}
                 width={paddleWidth}
                 height={paddleHeight}
-                fill="#ff6b6b"
-                rx="2"
+                fill="var(--g-fg)"
+                rx="1"
                 animate={{ y: paddle2Y }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
-              
+
               {/* Ball */}
               <motion.circle
                 cx={ballX + ballSize / 2}
                 cy={ballY + ballSize / 2}
                 r={ballSize / 2}
-                fill="#ffd93d"
-                animate={{ 
-                  cx: ballX + ballSize / 2, 
+                fill="var(--g-accent-pong)"
+                animate={{
+                  cx: ballX + ballSize / 2,
                   cy: ballY + ballSize / 2,
-                  scale: [1, 1.1, 1]
                 }}
-                transition={{ 
-                  scale: { duration: 0.3, repeat: Infinity }
-                }}
+                transition={{}}
               />
-              
+
               {/* Game status overlay */}
               {!isPlaying && !isGameOver && (
-                <text 
-                  x={gameWidth / 2} 
-                  y={gameHeight / 2} 
-                  textAnchor="middle" 
-                  fill="#ffffff" 
-                  fontSize="24" 
-                  fontWeight="bold"
-                >
-                  Press PLAY to start
+                <text x={gameWidth / 2} y={gameHeight / 2} textAnchor="middle" fill="currentColor" fontSize="14" letterSpacing="2" style={{ fontFamily: 'var(--g-mono)', color: 'var(--g-muted)' }}>
+                  PRESS PLAY
                 </text>
               )}
-              
+
               {isPaused && (
-                <text 
-                  x={gameWidth / 2} 
-                  y={gameHeight / 2} 
-                  textAnchor="middle" 
-                  fill="#ffffff" 
-                  fontSize="24" 
-                  fontWeight="bold"
-                >
+                <text x={gameWidth / 2} y={gameHeight / 2} textAnchor="middle" fill="currentColor" fontSize="14" letterSpacing="2" style={{ fontFamily: 'var(--g-mono)', color: 'var(--g-muted)' }}>
                   PAUSED
                 </text>
               )}

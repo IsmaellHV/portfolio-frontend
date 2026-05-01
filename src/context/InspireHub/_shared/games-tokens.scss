@@ -1,0 +1,115 @@
+// Minimalist tokens shared across all games. Theme-aware via [data-theme].
+// Use with @use './../_shared/games-tokens' as g;
+// Then reference vars or include the @mixin g.shell.
+
+[data-theme='light'] {
+  --g-bg: #fafafa;
+  --g-surface: #ffffff;
+  --g-fg: #18181b;
+  --g-muted: #71717a;
+  --g-border: #e4e4e7;
+  --g-border-strong: #d4d4d8;
+  --g-grid: #f4f4f5;
+  --g-overlay: rgba(255, 255, 255, 0.86);
+  --g-modal-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='dark'] {
+  --g-bg: #09090b;
+  --g-surface: #18181b;
+  --g-fg: #fafafa;
+  --g-muted: #a1a1aa;
+  --g-border: #27272a;
+  --g-border-strong: #3f3f46;
+  --g-grid: #18181b;
+  --g-overlay: rgba(9, 9, 11, 0.78);
+  --g-modal-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+// Per-game accent (kept neutral; pieces still use intrinsic palette where relevant).
+:root {
+  --g-accent-tetris: #f59e0b;
+  --g-accent-snake: #10b981;
+  --g-accent-pong: #3b82f6;
+  --g-accent-2048: #f97316;
+  --g-accent-memory: #8b5cf6;
+
+  --g-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --g-radius: 4px;
+  --g-radius-lg: 8px;
+  --g-pad: 16px;
+  --g-pad-lg: 24px;
+}
+
+@mixin g-shell {
+  min-height: calc(100vh - 60px);
+  background: var(--g-bg);
+  color: var(--g-fg);
+  font-family: var(--g-mono);
+  padding: var(--g-pad-lg) var(--g-pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--g-pad-lg);
+}
+
+@mixin g-card {
+  background: var(--g-surface);
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius-lg);
+  padding: var(--g-pad);
+}
+
+@mixin g-button($accent: var(--g-fg)) {
+  appearance: none;
+  border: 1px solid var(--g-border-strong);
+  background: transparent;
+  color: var(--g-fg);
+  font-family: var(--g-mono);
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: var(--g-radius);
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease, background 120ms ease;
+
+  &:hover {
+    border-color: $accent;
+    color: $accent;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    background: $accent;
+    border-color: $accent;
+    color: var(--g-bg);
+
+    &:hover {
+      filter: brightness(1.08);
+      color: var(--g-bg);
+    }
+  }
+}
+
+@mixin g-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .label,
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--g-muted);
+  }
+
+  .value,
+  .stat-value {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--g-fg);
+  }
+}

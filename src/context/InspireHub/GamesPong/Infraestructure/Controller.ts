@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { PropsView } from '../Domain/PropsView';
 import { useSEO } from '../../../shared/Hook/useSEO';
-import { GameScoresService } from '../../../../lib/supabase';
+import { useScoreSaver } from '../../GameScores/UseScoreSaver';
 
 interface Ball {
   x: number;
@@ -50,6 +50,8 @@ export const Controller = (): PropsView => {
 
   const [timeElapsed, setTimeElapsed] = useState('0s');
   const [keys, setKeys] = useState<Set<string>>(new Set());
+
+  const scoreSaver = useScoreSaver();
 
   // SEO
   useSEO({
@@ -107,22 +109,15 @@ export const Controller = (): PropsView => {
   // End game
   const endGame = useCallback(async () => {
     setGameState(prev => ({ ...prev, isGameOver: true, isPlaying: false }));
-    
-    // Save score to Supabase
-    try {
-      await GameScoresService.saveScore({
-        player_name: 'Player',
-        game_type: 'pong',
+
+    if (gameState.score > 0) {
+      await scoreSaver.save({
+        gameType: 'pong',
         score: gameState.score,
-        level_or_lines: 0,
+        levelOrLines: 0,
         duration: 0,
-        extra_data: {
-          timeElapsed: timeElapsed,
-          gameMode: 'classic'
-        }
+        extraData: { timeElapsed, gameMode: 'classic' },
       });
-    } catch (error) {
-      console.error('Error saving Pong score:', error);
     }
   }, [gameState.score, timeElapsed]);
 

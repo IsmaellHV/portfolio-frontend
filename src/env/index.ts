@@ -119,18 +119,20 @@ interface IEnvironment {
     ENTITY_DESC: string;
   };
 
-  SUPABASE: {
-    URL: string;
-    ANON_KEY: string;
+  INSPIREHUB_AUTH: {
+    SCHEMA: string;
+    ENTITY: string;
+  };
+
+  MASTER_CONTACTMESSAGE: {
+    SCHEMA: string;
+    ENTITY: string;
   };
 }
 
-// Extender la interfaz ImportMetaEnv para incluir las variables de Supabase
 declare global {
   interface ImportMetaEnv {
     readonly VITE_ENV: string;
-    readonly VITE_VAR_SUPABASE_URL: string;
-    readonly VITE_VAR_SUPABASE_ANON_KEY: string;
   }
 
   interface ImportMeta {
@@ -225,8 +227,8 @@ export const ENVIRONMENT: IEnvironment = {
   },
 
   INSPIREHUB_GAMES: {
-    SCHEMA: import.meta.env.VITE_VAR_INSPIREHUB_GAMES_SCHEMA || '',
-    ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_GAMES_ENTITY || '',
+    SCHEMA: import.meta.env.VITE_VAR_INSPIREHUB_GAMES_SCHEMA || 'Utilitie',
+    ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_GAMES_ENTITY || 'GameScores',
     SCHEMA_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMES_SCHEMA_DESC || '',
     ENTITY_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMES_ENTITY_DESC || '',
   },
@@ -266,8 +268,13 @@ export const ENVIRONMENT: IEnvironment = {
     ENTITY_DESC: import.meta.env.VITE_VAR_INSPIREHUB_GAMESMEMORY_ENTITY_DESC || '',
   },
 
-  SUPABASE: {
-    URL: import.meta.env.VITE_VAR_SUPABASE_URL || '',
-    ANON_KEY: import.meta.env.VITE_VAR_SUPABASE_ANON_KEY || '',
+  INSPIREHUB_AUTH: {
+    SCHEMA: import.meta.env.VITE_VAR_INSPIREHUB_AUTH_SCHEMA || 'Utilitie',
+    ENTITY: import.meta.env.VITE_VAR_INSPIREHUB_AUTH_ENTITY || 'AuthUser',
+  },
+
+  MASTER_CONTACTMESSAGE: {
+    SCHEMA: import.meta.env.VITE_VAR_MASTER_CONTACTMESSAGE_SCHEMA || 'Utilitie',
+    ENTITY: import.meta.env.VITE_VAR_MASTER_CONTACTMESSAGE_ENTITY || 'ContactMessage',
   },
 };

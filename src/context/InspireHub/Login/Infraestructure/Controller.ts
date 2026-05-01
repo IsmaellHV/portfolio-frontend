@@ -1,26 +1,28 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTurnstile } from 'react-turnstile';
 import { Dispatch } from 'redux';
 import * as Yup from 'yup';
+import { AdapterAuth } from '../../../shared/Infraestructure/AdapterAuth';
 import { AdapterGeneric } from '../../../shared/Infraestructure/AdapterGeneric';
+import { RootState } from '../../../shared/Infraestructure/AdapterStore';
 import { AdapterValidator } from '../../../shared/Infraestructure/AdapterValidator';
+import { signIn } from '../../../shared/Infraestructure/SliceAuthInspireHub';
 import { addLoading, removeLoading } from '../../../shared/Infraestructure/SliceGeneric';
 import { IFormLoginValues } from '../Domain/IFormLogin';
 import { PropsView } from '../Domain/PropsView';
-import { AdapterSupabase } from '../../../shared/Infraestructure/AdapterSupabase';
-import { signIn } from '../../../shared/Infraestructure/SliceAuthInspireHub';
-import { ENVIRONMENT } from '../../../../env';
 
 export const Controller = (): PropsView => {
   //#region VARIABLES GLOBAL
   const [isSubmitting, setIsSubmitting] = useState(false);
   const turnstile = useTurnstile();
   const dispatch: Dispatch = useDispatch();
+  const { dbLocal } = useSelector((state: RootState) => state.generic);
+  const repository = AdapterAuth.buildRepository(dbLocal, dispatch);
   //#endregion
 
-  //#Recaptcha
+  //#region Captcha
   const [recaptcha, setRecaptcha] = useState('');
 
   const onChangeRecaptcha = (recaptcha: string) => {
@@ -28,13 +30,12 @@ export const Controller = (): PropsView => {
   };
   //#endregion
 
-  //#region INICIALITATION
+  //#region INIT
   const init = async () => {};
-
   const end = async () => {};
   //#endregion
 
-  //#region FORM CREATE SHORTLINK
+  //#region FORM LOGIN
   const formLogin = useFormik<IFormLoginValues>({
     initialValues: {
       email: '',
@@ -71,8 +72,12 @@ export const Controller = (): PropsView => {
       if (!recaptcha) throw new Error('Not valid captcha');
 
       dispatch(addLoading('Loading...'));
-      const { user } = await AdapterSupabase.signInWithPassword(formLogin.values.email, formLogin.values.password);
-      dispatch(signIn({ user: user?.id ? user : null }));
+      const user = await AdapterAuth.signIn(repository, {
+        email: formLogin.values.email,
+        password: formLogin.values.password,
+        captcha: recaptcha,
+      });
+      dispatch(signIn({ user }));
 
       turnstile.reset();
       onChangeRecaptcha('');
@@ -85,71 +90,23 @@ export const Controller = (): PropsView => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const oauthStart = (provider: 'google' | 'github') => {
+    window.location.href = AdapterAuth.oauthStartUrl(provider);
   };
 
   const onSubmitLoginGoogle = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLInputElement>) => {
-    try {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isSubmitting) return;
-      setIsSubmitting(true);
-
-      await formLogin.submitForm();
-      try {
-        AdapterValidator.validate(await formLogin.validateForm());
-      } catch (error) {
-        AdapterGeneric.createToast({ message: (error as Error).message, icon: 'error' });
-        return;
-      }
-
-      if (!recaptcha) throw new Error('Not valid captcha');
-
-      dispatch(addLoading('Loading...'));
-      const resp = await AdapterSupabase.signInWithProvider('google', `${window.location.origin}${ENVIRONMENT.ROUTE.INSPIREHUBHOME}`);
-      console.log({ resp });
-      // const { user } = await AdapterSupabase.signInWithPassword(formLogin.values.email, formLogin.values.password);
-      // dispatch(signIn({ user: user?.id ? user : null }));
-
-      turnstile.reset();
-      onChangeRecaptcha('');
-      AdapterGeneric.createToast({ message: 'Welcome', icon: 'success' });
-      formLogin.resetForm();
-      dispatch(removeLoading());
-    } catch (error) {
-      dispatch(removeLoading());
-      AdapterGeneric.createToast({ message: (error as Error).message, icon: 'error' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    e.preventDefault();
+    e.stopPropagation();
+    oauthStart('google');
   };
 
   const onSubmitLoginGithub = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLInputElement>) => {
-    try {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isSubmitting) return;
-      setIsSubmitting(true);
-
-      if (!recaptcha) throw new Error('Not valid captcha');
-
-      dispatch(addLoading('Loading...'));
-      const resp = await AdapterSupabase.signInWithProvider('github', `${window.location.origin}${ENVIRONMENT.ROUTE.INSPIREHUBHOME}`);
-      console.log({ resp });
-      // dispatch(signIn({ user: data?.id ? user : null }));
-
-      turnstile.reset();
-      onChangeRecaptcha('');
-      AdapterGeneric.createToast({ message: 'Bienvenido', icon: 'success' });
-      formLogin.resetForm();
-      dispatch(removeLoading());
-    } catch (error) {
-      dispatch(removeLoading());
-      AdapterGeneric.createToast({ message: (error as Error).message, icon: 'error' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    e.preventDefault();
+    e.stopPropagation();
+    oauthStart('github');
   };
-
   //#endregion
 
   //#region EXPORT

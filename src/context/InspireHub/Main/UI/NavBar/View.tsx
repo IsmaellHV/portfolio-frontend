@@ -10,24 +10,32 @@ import { Avatar, Badge, Dropdown } from 'rsuite';
 import { ENVIRONMENT } from '../../../../../env';
 import { AdapterGeneric } from '../../../../shared/Infraestructure/AdapterGeneric';
 import { RootState } from '../../../../shared/Infraestructure/AdapterStore';
-import { AdapterSupabase } from '../../../../shared/Infraestructure/AdapterSupabase';
+import { AdapterAuth } from '../../../../shared/Infraestructure/AdapterAuth';
 import { setUser, signOut } from '../../../../shared/Infraestructure/SliceAuthInspireHub';
 import { addLoading, removeLoading, setToggleTheme } from '../../../../shared/Infraestructure/SliceGeneric';
 import { setLanguage } from '../../../../shared/Infraestructure/SliceLanguage';
 import './Style.scss';
 
 export const NavBar = () => {
-  const { themeLight } = useSelector((state: RootState) => state.generic);
+  const { themeLight, dbLocal } = useSelector((state: RootState) => state.generic);
   const language = useSelector((state: RootState) => state.language);
   const { auth, user } = useSelector((state: RootState) => state.authInspireHub);
   const dispatch: Dispatch = useDispatch();
   const navigate: NavigateFunction = useNavigate();
+  const repository = AdapterAuth.buildRepository(dbLocal, dispatch);
 
   useEffect(() => {
-    AdapterSupabase.getUser().then((response) => {
-      console.log({ response });
-
-      dispatch(setUser({ user: !response.user?.id ? null : response.user }));
+    const oauthResult = AdapterAuth.consumeOAuthHash();
+    if (oauthResult && 'user' in oauthResult) {
+      dispatch(setUser({ user: oauthResult.user }));
+      AdapterGeneric.createToast({ message: 'Welcome', icon: 'success' });
+      return;
+    }
+    if (oauthResult && 'error' in oauthResult) {
+      AdapterGeneric.createToast({ message: oauthResult.error, icon: 'error' });
+    }
+    AdapterAuth.me(repository).then((user) => {
+      dispatch(setUser({ user }));
     });
   }, []);
 
@@ -52,7 +60,7 @@ export const NavBar = () => {
           {...props}
           size="sm"
           circle
-          src={user?.user_metadata?.avatar_url || 'https://i.pravatar.cc/150'}
+          src={user?.avatarUrl || 'https://i.pravatar.cc/150'}
         />
       </Badge>
     );
@@ -61,7 +69,7 @@ export const NavBar = () => {
   const logout = async () => {
     try {
       dispatch(addLoading('Logging out...'));
-      await AdapterSupabase.signOut();
+      await AdapterAuth.signOut(repository);
       dispatch(signOut());
       AdapterGeneric.createToast({ message: 'Signed out', icon: 'success' });
     } catch (error) {

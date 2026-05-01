@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { PropsView } from '../Domain/PropsView';
 import { useSEO } from '../../../shared/Hook/useSEO';
-import { GameScoresService } from '../../../../lib/supabase';
+import { useScoreSaver } from '../../GameScores/UseScoreSaver';
 
 const BOARD_SIZE = 20;
 const initialSnake = [{ x: 10, y: 10 }];
@@ -38,6 +38,8 @@ export const Controller = (): PropsView & {
   const [food, setFood] = useState(initialFood);
   const [direction, setDirection] = useState('RIGHT');
   const [isPaused, setIsPaused] = useState(false);
+
+  const scoreSaver = useScoreSaver();
 
   useSEO({
     title: `[${score.toString()}] Snake Game`,
@@ -144,18 +146,13 @@ export const Controller = (): PropsView & {
 
   const saveScore = async () => {
     if (score > 0) {
-      try {
-        await GameScoresService.saveScore({
-          player_name: 'Player',
-          game_type: 'snake',
-          score: score,
-          level_or_lines: 0,
-          duration: timeElapsed,
-          extra_data: { snake_length: snake.length }
-        });
-      } catch (error) {
-        console.error('Error saving score:', error);
-      }
+      await scoreSaver.save({
+        gameType: 'snake',
+        score: score,
+        levelOrLines: 0,
+        duration: timeElapsed,
+        extraData: { snakeLength: snake.length },
+      });
     }
   };
 

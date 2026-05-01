@@ -5,8 +5,7 @@ import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 import { AdapterGeneric } from '../../../shared/Infraestructure/AdapterGeneric';
 import { AdapterValidator } from '../../../shared/Infraestructure/AdapterValidator';
-import { AdapterSupabase } from '../../../shared/Infraestructure/AdapterSupabase';
-import { EntityContactMessage } from '../../../shared/Domain/db/EntityContactMessage';
+import { useContactMessageService } from '../../ContactMessage/UseContactMessageService';
 import { addLoading, removeLoading } from '../../../shared/Infraestructure/SliceGeneric';
 import { IFormContactValues } from '../Domain/IFormContact';
 import { PropsView } from '../Domain/PropsView';
@@ -17,6 +16,7 @@ export const Controller = (): PropsView => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch: Dispatch = useDispatch();
   const language = useSelector((state: RootState) => state.language);
+  const contactApi = useContactMessageService();
 
   //#endregion
 
@@ -71,18 +71,14 @@ export const Controller = (): PropsView => {
       if (!recaptcha) throw new Error('Not valid captcha');
 
       dispatch(addLoading('Loading...'));
-      
-      // Guardar mensaje en Supabase
-      const contactMessage: EntityContactMessage = {
+
+      await contactApi.createMessage({
         name: formContact.values.name,
         email: formContact.values.email,
         message: formContact.values.message,
-        read: false,
-        created_at: new Date().toISOString()
-      };
-      
-      await AdapterSupabase.insertData('contact_messages', contactMessage);
-      
+        captcha: recaptcha,
+      });
+
       AdapterGeneric.createToast({ message: 'Message sent', icon: 'success' });
       turnstile.reset();
       onChangeRecaptcha('');

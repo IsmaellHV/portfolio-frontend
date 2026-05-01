@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSEO } from '../../../shared/Hook/useSEO';
-import { GameScoresService } from '../../../../lib/supabase';
+import { useScoreSaver } from '../../GameScores/UseScoreSaver';
 import { ENVIRONMENT } from '../../../../env';
 import { PropsView } from '../Domain/PropsView';
 
@@ -341,23 +341,21 @@ export const Controller = (): PropsView => {
     };
   }, [gameStarted, isGameOver, isWon]);
 
-  // Save score to Supabase
+  const scoreSaver = useScoreSaver();
+
   const saveScore = async () => {
-    try {
-      await GameScoresService.saveScore({
-        player_name: 'Player',
-        game_type: '2048',
+    if (score > 0) {
+      await scoreSaver.save({
+        gameType: '2048',
         score,
-        level_or_lines: moves,
+        levelOrLines: moves,
         duration: time,
-        extra_data: {
-          board_state: board,
-          highest_tile: Math.max(...board.flat()),
+        extraData: {
+          boardState: board,
+          highestTile: Math.max(...board.flat()),
           won: isWon,
         },
       });
-    } catch (error) {
-      console.error('Error saving score:', error);
     }
   };
 

@@ -8,7 +8,8 @@ import { ENVIRONMENT } from '../../../../env';
 import { PropsView } from '../Domain/PropsView';
 import './Style.scss';
 
-import { GameScoresService, GameScore } from '../../../../lib/supabase';
+import { useGameScoresService } from '../../GameScores/UseGameScoresService';
+import { EntityMain as GameScore } from '../../GameScores/Domain/EntityMain';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -23,31 +24,29 @@ export const View = (props: PropsView) => {
   const [gameStats, setGameStats] = useState<any>({});
   const [selectedGameFilter, setSelectedGameFilter] = useState('all');
 
-  // Load scores and stats from Supabase
+  const gameScoresApi = useGameScoresService();
+
   useEffect(() => {
     const loadGameData = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const [scores, tetrisStats, snakeStats] = await Promise.all([
-          GameScoresService.getScores(),
-          GameScoresService.getGameStats('tetris'),
-          GameScoresService.getGameStats('snake')
-        ])
-        
-        setGameScores(scores)
-        setGameStats({
-          tetris: tetrisStats,
-          snake: snakeStats
-        })
-      } catch (error) {
-        console.error('Error loading game data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
+          gameScoresApi.getScores({ limit: 100 }),
+          gameScoresApi.getGameStats({ gameType: 'tetris' }),
+          gameScoresApi.getGameStats({ gameType: 'snake' }),
+        ]);
 
-    loadGameData()
-  }, [])
+        setGameScores(scores);
+        setGameStats({ tetris: tetrisStats, snake: snakeStats });
+      } catch (error) {
+        console.error('Error loading game data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGameData();
+  }, []);
 
   // Game data with enhanced information
   const gamesData = [
@@ -155,7 +154,7 @@ export const View = (props: PropsView) => {
   // Filter scores by selected game
   const filteredScores = selectedGameFilter === 'all' 
     ? gameScores 
-    : gameScores.filter(score => score.game_type === selectedGameFilter);
+    : gameScores.filter(score => score.gameType === selectedGameFilter);
 
   const handleChangeLimit = (dataKey: number) => {
     setPage(1);
@@ -338,15 +337,15 @@ export const View = (props: PropsView) => {
                 >
                   <Column width={150} align="center" fixed>
                     <HeaderCell>Jugador</HeaderCell>
-                    <Cell dataKey="player_name" />
+                    <Cell dataKey="playerName" />
                   </Column>
 
                   <Column width={100} align="center">
                     <HeaderCell>Juego</HeaderCell>
                     <Cell>
                       {(rowData: GameScore) => (
-                        <Badge color={rowData.game_type === 'tetris' ? 'blue' : 'green'}>
-                          {rowData.game_type.charAt(0).toUpperCase() + rowData.game_type.slice(1)}
+                        <Badge color={rowData.gameType === 'tetris' ? 'blue' : 'green'}>
+                          {rowData.gameType.charAt(0).toUpperCase() + rowData.gameType.slice(1)}
                         </Badge>
                       )}
                     </Cell>
@@ -361,7 +360,7 @@ export const View = (props: PropsView) => {
 
                   <Column width={100} align="center">
                     <HeaderCell>Nivel/Líneas</HeaderCell>
-                    <Cell dataKey="level_or_lines" />
+                    <Cell dataKey="levelOrLines" />
                   </Column>
 
                   <Column width={120} align="center">
@@ -378,7 +377,7 @@ export const View = (props: PropsView) => {
                   <Column width={150} align="center">
                     <HeaderCell>Fecha</HeaderCell>
                     <Cell>
-                      {(rowData: GameScore) => new Date(rowData.created_at).toLocaleDateString()}
+                      {(rowData: GameScore) => new Date((rowData.registrar?.fecha as unknown as string) || Date.now()).toLocaleDateString()}
                     </Cell>
                   </Column>
                 </Table>
