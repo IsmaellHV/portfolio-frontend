@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { Controller } from './Infraestructure/Controller';
-import { TetraverseSettingsProvider } from './Domain/Engine/SettingsContext';
 import { View } from './UI/View';
 
-const InnerManager = () => {
+const ManagerEntity = () => {
   const controller = Controller();
 
   useEffect(() => {
@@ -15,11 +14,5 @@ const InnerManager = () => {
 
   return <View {...controller} />;
 };
-
-const ManagerEntity = () => (
-  <TetraverseSettingsProvider>
-    <InnerManager />
-  </TetraverseSettingsProvider>
-);
 
 export default ManagerEntity;

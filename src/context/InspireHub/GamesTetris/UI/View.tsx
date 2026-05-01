@@ -10,6 +10,7 @@ import { AdapterConfigure } from '../Infraestructure/AdapterConfigure';
 import './Style.scss';
 import { TetrisBoard } from './TetrisBoard';
 import NextPiecePreview from './NextPiecePreview';
+import { TetraverseSettingsPanel } from './TetraverseSettingsPanel';
 import { InputForm } from '../../../shared/Components/Element/InputForm/View';
 
 export const View = (props: PropsView) => {
@@ -167,6 +168,12 @@ export const View = (props: PropsView) => {
                 <p>Score: {props.score}</p>
                 <p>Lines: {props.lines}</p>
                 <p>Time: {props.timeElapsed}s</p>
+              </Panel>
+            </Row>
+
+            <Row>
+              <Panel bordered header="Tetraverse · Realm & Pieces" className="tetraverse-panel">
+                <TetraverseSettingsPanel />
               </Panel>
             </Row>
             

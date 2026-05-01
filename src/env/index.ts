@@ -66,6 +66,7 @@ interface IEnvironment {
     INSPIREHUBGAMES2048: string;
     INSPIREHUBGAMESMEMORY: string;
     INSPIREHUBLOGIN: string;
+    INSPIREHUBSIGNUP: string;
   };
 
   INSPIREHUB_FASTLINK: {
@@ -215,6 +216,7 @@ export const ENVIRONMENT: IEnvironment = {
     INSPIREHUBGAMES2048: '/inspire-hub/games/2048',
     INSPIREHUBGAMESMEMORY: '/inspire-hub/games/memory',
     INSPIREHUBLOGIN: '/inspire-hub/login',
+    INSPIREHUBSIGNUP: '/inspire-hub/signup',
   },
 
   INSPIREHUB_FASTLINK: {

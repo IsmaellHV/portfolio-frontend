@@ -1,3 +1,7 @@
+import { Realm } from '../Domain/Engine/types';
+import { getRealm } from '../Domain/Engine/registry';
+import { useTetraverseSettings } from '../Domain/Engine/SettingsContext';
+
 type TetrisBoardProps = {
   board: number[][];
   currentShape: number[][] | null;
@@ -7,6 +11,9 @@ type TetrisBoardProps = {
 };
 
 export const TetrisBoard: React.FC<TetrisBoardProps> = ({ board, currentShape, position, rowsToClear = [], className }) => {
+  const { settings } = useTetraverseSettings();
+  const realm: Realm = getRealm(settings.realmId);
+
   const renderedBoard = board.map((row) => [...row]);
 
   if (currentShape) {
@@ -25,39 +32,44 @@ export const TetrisBoard: React.FC<TetrisBoardProps> = ({ board, currentShape, p
     });
   }
 
+  const shaking = settings.shakeEnabled && rowsToClear.length > 0;
+
   return (
-    <div className={'tetris-board' + (className ? ` ${className}` : '')}>
+    <div
+      className={[
+        'tetris-board',
+        realm.rootClass,
+        shaking ? 'fx-shake' : '',
+        className || '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {renderedBoard.map((row, rowIndex) => {
         const isClearing = rowsToClear.includes(rowIndex);
         return (
           <div key={rowIndex} className={`tetris-row ${isClearing ? 'row-clearing' : ''}`}>
-            {row.map((cell, cellIndex) => (
-              <div key={cellIndex} className={`tetris-cell ${cell ? 'filled' : ''}`} style={{ backgroundColor: getColorForCell(cell) }}></div>
-            ))}
+            {row.map((cell, cellIndex) => {
+              const cellFx =
+                realm.cellClass?.({
+                  pieceId: cell,
+                  isClearing,
+                  rowIndex,
+                  colIndex: cellIndex,
+                }) || '';
+              const bg = cell ? realm.palette[cell] || realm.palette[1] : 'transparent';
+              return (
+                <div
+                  key={cellIndex}
+                  className={['tetris-cell', cell ? 'filled' : '', cellFx].filter(Boolean).join(' ')}
+                  style={{ backgroundColor: bg, ['--cell-color' as never]: bg }}
+                ></div>
+              );
+            })}
           </div>
         );
       })}
+      {realm.overlayClass && <div className={`realm-overlay ${realm.overlayClass}`} aria-hidden />}
     </div>
   );
-};
-
-const getColorForCell = (cell: number) => {
-  switch (cell) {
-    case 1:
-      return '#ff6347';
-    case 2:
-      return '#3cb371';
-    case 3:
-      return '#1e90ff';
-    case 4:
-      return '#ffd700';
-    case 5:
-      return '#ee82ee';
-    case 6:
-      return '#ffa500';
-    case 7:
-      return '#00ced1';
-    default:
-      return 'transparent';
-  }
 };

@@ -12,6 +12,8 @@ import { AdapterValidator } from '../../../shared/Infraestructure/AdapterValidat
 import { AdapterGeneric } from '../../../shared/Infraestructure/AdapterGeneric';
 import { RootState } from '../../../shared/Infraestructure/AdapterStore';
 import { useSelector } from 'react-redux';
+import { getPieceSet } from '../Domain/Engine/registry';
+import { useTetraverseSettings } from '../Domain/Engine/SettingsContext';
 
 export const Controller = (): PropsView => {
   //#region VARIABLES GLOBAL
@@ -20,6 +22,8 @@ export const Controller = (): PropsView => {
   const isScreen_992 = useMediaQuery({ maxWidth: 992 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const gameScores = useGameScoresService();
+  const { settings } = useTetraverseSettings();
+  const activePieceSet = getPieceSet(settings.pieceSetId);
 
   let BOARD_WIDTH, BOARD_HEIGHT;
 
@@ -41,33 +45,8 @@ export const Controller = (): PropsView => {
     BOARD_HEIGHT = 24;
   }
 
-  const TETRIS_SHAPES = {
-    I: [[1, 1, 1, 1]],
-    O: [
-      [2, 2],
-      [2, 2],
-    ],
-    T: [
-      [0, 3, 0],
-      [3, 3, 3],
-    ],
-    S: [
-      [0, 4, 4],
-      [4, 4, 0],
-    ],
-    Z: [
-      [5, 5, 0],
-      [0, 5, 5],
-    ],
-    J: [
-      [6, 0, 0],
-      [6, 6, 6],
-    ],
-    L: [
-      [0, 0, 7],
-      [7, 7, 7],
-    ],
-  };
+  // Active piece pool comes from selected PieceSet (registry).
+  const PIECE_SHAPES = activePieceSet.pieces.map((p) => p.matrix);
 
   const [board, setBoard] = useState(Array.from({ length: BOARD_HEIGHT }, () => Array(BOARD_WIDTH).fill(0)));
   const [currentShape, setCurrentShape] = useState<number[][] | null>(null);
@@ -269,6 +248,13 @@ export const Controller = (): PropsView => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isPlaying || notificationGameOver) return;
+
+      // Block browser scroll/back-forward when game owns the arrow keys + space.
+      const gameKeys = ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' ', 'Space'];
+      if (gameKeys.includes(event.key)) {
+        event.preventDefault();
+      }
+
       switch (event.key) {
         case 'ArrowLeft':
           moveShape(-1);
@@ -286,7 +272,8 @@ export const Controller = (): PropsView => {
           break;
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
+    // passive:false required so preventDefault actually blocks scroll
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isPlaying, notificationGameOver, currentShape, position]);
 
@@ -294,8 +281,7 @@ export const Controller = (): PropsView => {
 
   //#region Game
   const generateRandomShape = (): number[][] => {
-    const shapes = Object.values(TETRIS_SHAPES);
-    const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+    const randomShape = PIECE_SHAPES[Math.floor(Math.random() * PIECE_SHAPES.length)];
     return randomShape;
   };
 

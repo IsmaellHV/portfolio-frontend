@@ -77,7 +77,7 @@ export const View = (props: PropsView) => {
           </Button>
 
           <p className="register-link">
-            Don't have an account? <a href="/register">Sign Up</a>
+            Don't have an account? <a href={ENVIRONMENT.ROUTE.INSPIREHUBSIGNUP}>Sign Up</a>
           </p>
 
           <div className="recaptcha">
