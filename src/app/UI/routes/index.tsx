@@ -11,6 +11,7 @@ import InspireHubGamesMemory from '../../../context/InspireHub/GamesMemory';
 import InspireHubHome from '../../../context/InspireHub/Home';
 import InspireHubLogin from '../../../context/InspireHub/Login';
 import InspireHubSignUp from '../../../context/InspireHub/SignUp';
+import InspireHubProfile from '../../../context/InspireHub/Profile';
 import InspireHubMain from '../../../context/InspireHub/Main';
 import MasterContact from '../../../context/Master/Contact';
 // import { LoaderApp } from '../../../context/shared/Components/Element/LoaderApp/View';
@@ -45,6 +46,7 @@ export const AppRoutes = () => {
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBHOME} element={<Navigate to={ENVIRONMENT.ROUTE.INSPIREHUB} replace />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBLOGIN} element={<AuthGuardInspireHub element={<InspireHubLogin />} privateContent={false} />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBSIGNUP} element={<AuthGuardInspireHub element={<InspireHubSignUp />} privateContent={false} />} />
+            <Route path={ENVIRONMENT.ROUTE.INSPIREHUBPROFILE} element={<AuthGuardInspireHub element={<InspireHubProfile />} privateContent={true} />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBFASTLINK} element={<InspireHubFastLink />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMES} element={<InspireHubGames />} />
             <Route path={ENVIRONMENT.ROUTE.INSPIREHUBGAMESTETRIS} element={<InspireHubGamesTetris />} />

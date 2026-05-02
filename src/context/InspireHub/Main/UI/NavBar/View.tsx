@@ -110,7 +110,7 @@ export const NavBar = () => {
                   </div>
                 </Dropdown.Item>
                 <Dropdown.Separator />
-                <Dropdown.Item>Your profile</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleGo(ENVIRONMENT.ROUTE.INSPIREHUBPROFILE)}>Your profile</Dropdown.Item>
                 <Dropdown.Separator />
                 <Dropdown.Item onClick={logout}>Sign out</Dropdown.Item>
               </Dropdown>

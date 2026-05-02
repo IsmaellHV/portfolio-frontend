@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { AdapterIndexedDB } from '../../../shared/Infraestructure/AdapterIndexedDB';
 import { RepositoryImplGeneric } from '../../../shared/Infraestructure/RepositoryImplGeneric';
 import { EntityUser } from '../Domain/EntityUser';
+import { IRequestServiceChangePassword, IResponseServiceChangePassword } from '../Domain/IServiceChangePassword';
 import { IResponseServiceMe } from '../Domain/IServiceMe';
 import { IRequestServiceRefresh, IResponseServiceRefresh } from '../Domain/IServiceRefresh';
 import { IRequestServiceSignIn, IResponseServiceSignIn } from '../Domain/IServiceSignIn';
@@ -50,5 +51,11 @@ export class RepositoryImplMain extends RepositoryImplGeneric<EntityUser> implem
   public async signOut(accessToken: string): Promise<void> {
     const url = `${AdapterConfigure.URL}/${AdapterConfigure.SCHEMA}/${AdapterConfigure.ENTITY}/signOut`;
     await this.service.bgCall('POST', url, '', 'bearer', 'json', 'json', this.bearer(accessToken), 0);
+  }
+
+  public async changePassword(accessToken: string, params: IRequestServiceChangePassword): Promise<IResponseServiceChangePassword> {
+    const url = `${AdapterConfigure.URL}/${AdapterConfigure.SCHEMA}/${AdapterConfigure.ENTITY}/changePassword`;
+    const response = await this.service.bgCall<IResponseServiceChangePassword>('POST', url, JSON.stringify(params), 'bearer', 'json', 'json', this.bearer(accessToken), 0);
+    return response as IResponseServiceChangePassword;
   }
 }

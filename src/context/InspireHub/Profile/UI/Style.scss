@@ -1,0 +1,107 @@
+.inspireHub-profile {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 8.5vh;
+  min-height: 91.5vh;
+  padding: 2rem 1rem;
+  background-color: var(--secondary-color);
+
+  .profile-container {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .profile-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
+    padding: 1.5rem;
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 1rem;
+
+    .profile-logo {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+
+      svg {
+        width: 3rem;
+        height: 3rem;
+        stroke: var(--color-primary-300);
+        stroke-width: 2px;
+      }
+    }
+
+    .profile-avatar {
+      display: block;
+      font-size: 4rem;
+      color: var(--color-primary-300);
+      margin: 0.5rem auto;
+    }
+
+    .profile-name {
+      margin: 0.25rem 0;
+      font-size: 1.4rem;
+      color: var(--text-color);
+    }
+
+    .profile-email {
+      margin: 0;
+      color: var(--color-primary-300);
+      font-size: 0.95rem;
+    }
+
+    .profile-badge {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 2px 10px;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-color);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+    }
+  }
+
+  .profile-sep {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 1rem 0;
+  }
+
+  .profile-section {
+    h3 {
+      font-size: 1rem;
+      margin: 0 0 0.75rem 0;
+      color: var(--text-color);
+
+      svg {
+        margin-right: 0.4rem;
+        color: var(--color-primary-300);
+      }
+    }
+
+    .profile-hint {
+      color: var(--text-color);
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  }
+
+  .signout-btn {
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    .profile-card {
+      padding: 1rem;
+    }
+    .profile-header .profile-avatar {
+      font-size: 3rem;
+    }
+  }
+}

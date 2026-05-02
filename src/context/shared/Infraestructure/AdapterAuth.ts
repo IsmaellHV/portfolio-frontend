@@ -8,6 +8,8 @@ import { UseCaseRefresh } from '../../InspireHub/Auth/Aplication/UseCaseRefresh'
 import { UseCaseSignIn } from '../../InspireHub/Auth/Aplication/UseCaseSignIn';
 import { UseCaseSignOut } from '../../InspireHub/Auth/Aplication/UseCaseSignOut';
 import { UseCaseSignUp } from '../../InspireHub/Auth/Aplication/UseCaseSignUp';
+import { UseCaseChangePassword } from '../../InspireHub/Auth/Aplication/UseCaseChangePassword';
+import { IRequestServiceChangePassword } from '../../InspireHub/Auth/Domain/IServiceChangePassword';
 import { IRequestServiceSignIn } from '../../InspireHub/Auth/Domain/IServiceSignIn';
 import { IRequestServiceSignUp } from '../../InspireHub/Auth/Domain/IServiceSignUp';
 import { AdapterConfigure as AuthAdapterConfigure } from '../../InspireHub/Auth/Infraestructure/AdapterConfigure';
@@ -76,6 +78,12 @@ export class AdapterAuth {
       AdapterStorage.set(KEY_USER, user);
       return user;
     }
+  }
+
+  public static async changePassword(repo: RepositoryImplMain, params: IRequestServiceChangePassword): Promise<void> {
+    const token = AdapterAuth.getAccessToken();
+    if (!token) throw new Error('No autorizado');
+    await new UseCaseChangePassword(repo).exec(token, params);
   }
 
   public static async signOut(repo: RepositoryImplMain): Promise<void> {
