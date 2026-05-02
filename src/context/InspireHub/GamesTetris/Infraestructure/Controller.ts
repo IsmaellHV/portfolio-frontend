@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -15,6 +15,16 @@ import { useSelector } from 'react-redux';
 import { getPieceSet } from '../Domain/Engine/registry';
 import { useTetraverseSettings } from '../Domain/Engine/SettingsContext';
 
+// === Tunables ===
+const LOCK_DELAY_MS = 500;        // grace period to slide before piece locks
+const MAX_LOCK_RESETS = 15;        // max times lock-delay can be reset (anti-infinity)
+const DAS_DELAY_MS = 170;          // ms before auto-shift kicks in
+const ARR_INTERVAL_MS = 50;        // ms between auto-shift moves
+const SOFT_DROP_INTERVAL_MS = 50;  // ms between soft-drop steps when ArrowDown held
+const BASE_GRAVITY_MS = 500;       // gravity at level 1
+const GRAVITY_PER_LEVEL_MS = 40;   // speedup per level
+const MIN_GRAVITY_MS = 80;         // floor speed
+
 export const Controller = (): PropsView => {
   //#region VARIABLES GLOBAL
   const isScreen_480 = useMediaQuery({ maxWidth: 480 });
@@ -28,19 +38,15 @@ export const Controller = (): PropsView => {
   let BOARD_WIDTH, BOARD_HEIGHT;
 
   if (isScreen_480) {
-    // Pantallas menores a 480px
     BOARD_WIDTH = 8;
     BOARD_HEIGHT = 16;
   } else if (isScreen_768) {
-    // Pantallas entre 481px y 768px
     BOARD_WIDTH = 9;
     BOARD_HEIGHT = 18;
   } else if (isScreen_992) {
-    // Pantallas entre 769px y 1024px
     BOARD_WIDTH = 10;
     BOARD_HEIGHT = 20;
   } else {
-    // Pantallas mayores a 1024px
     BOARD_WIDTH = 12;
     BOARD_HEIGHT = 24;
   }
@@ -50,6 +56,7 @@ export const Controller = (): PropsView => {
 
   const [board, setBoard] = useState(Array.from({ length: BOARD_HEIGHT }, () => Array(BOARD_WIDTH).fill(0)));
   const [currentShape, setCurrentShape] = useState<number[][] | null>(null);
+  const [holdShape, setHoldShape] = useState<number[][] | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [lines, setLines] = useState(0);
   const [nextShape, setNextShape] = useState<number[][] | null>(null);
@@ -62,6 +69,37 @@ export const Controller = (): PropsView => {
   const collisionAudioRef = useRef<HTMLAudioElement | null>(null);
   const navigate: NavigateFunction = useNavigate();
   const tetrisAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Refs that mirror the live state for use inside timers/event handlers
+  // (avoids stale closures for lock-delay, DAS, soft drop loops).
+  const boardRef = useRef(board);
+  const positionRef = useRef(position);
+  const currentShapeRef = useRef(currentShape);
+  const nextShapeRef = useRef(nextShape);
+  const isPlayingRef = useRef(isPlaying);
+  const gameOverRef = useRef(notificationGameOver);
+
+  useEffect(() => { boardRef.current = board; }, [board]);
+  useEffect(() => { positionRef.current = position; }, [position]);
+  useEffect(() => { currentShapeRef.current = currentShape; }, [currentShape]);
+  useEffect(() => { nextShapeRef.current = nextShape; }, [nextShape]);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+  useEffect(() => { gameOverRef.current = notificationGameOver; }, [notificationGameOver]);
+
+  // Lock delay
+  const lockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lockResetsRef = useRef(0);
+
+  // Hold tracking — single use per piece (until next spawn).
+  const holdUsedRef = useRef(false);
+
+  // DAS / ARR for horizontal movement
+  const dasTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const arrIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const heldDirRef = useRef<number | null>(null);
+
+  // Soft drop
+  const softDropIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   //#endregion
 
   //#region INICIALITATION
@@ -78,6 +116,9 @@ export const Controller = (): PropsView => {
       tetrisAudioRef.current.currentTime = 0;
       tetrisAudioRef.current.pause();
     }
+    cancelLockTimer();
+    cancelDasArr();
+    cancelSoftDrop();
   };
   //#endregion
 
@@ -105,8 +146,16 @@ export const Controller = (): PropsView => {
   };
   //#endregion
 
+  //#region Level / gravity
+  const level = Math.floor(lines / 10) + 1;
+  const gravityMs = Math.max(MIN_GRAVITY_MS, BASE_GRAVITY_MS - (level - 1) * GRAVITY_PER_LEVEL_MS);
+  //#endregion
+
   //#region Actions Games
   const startGame = () => {
+    cancelLockTimer();
+    cancelDasArr();
+    cancelSoftDrop();
     setBoard(Array.from({ length: BOARD_HEIGHT }, () => Array(BOARD_WIDTH).fill(0)));
     setPosition({ x: Math.floor(BOARD_WIDTH / 2) - 1, y: 0 });
     setIsPlaying(true);
@@ -114,11 +163,14 @@ export const Controller = (): PropsView => {
     setScore(0);
     setLines(0);
     setTimeElapsed(0);
+    setHoldShape(null);
+    holdUsedRef.current = false;
 
     const initialCurrentShape = generateRandomShape();
     const initialNextShape = generateRandomShape();
     setNextShape(initialNextShape);
-    generateCurrentShape(initialCurrentShape);
+    nextShapeRef.current = initialNextShape;
+    spawnShape(initialCurrentShape);
 
     if (tetrisAudioRef.current) {
       tetrisAudioRef.current.currentTime = 0;
@@ -141,11 +193,14 @@ export const Controller = (): PropsView => {
     setIsPlaying((prevIsPlaying) => {
       const newIsPlaying = !prevIsPlaying;
       if (tetrisAudioRef.current) {
-        if (newIsPlaying) {
-          tetrisAudioRef.current.play();
-        } else {
-          tetrisAudioRef.current.pause();
-        }
+        if (newIsPlaying) tetrisAudioRef.current.play();
+        else tetrisAudioRef.current.pause();
+      }
+      // Pause cancels active timers
+      if (!newIsPlaying) {
+        cancelLockTimer();
+        cancelDasArr();
+        cancelSoftDrop();
       }
       return newIsPlaying;
     });
@@ -154,6 +209,9 @@ export const Controller = (): PropsView => {
   const stopGame = () => {
     setIsPlaying(false);
     setNotificationGameOver(true);
+    cancelLockTimer();
+    cancelDasArr();
+    cancelSoftDrop();
     if (tetrisAudioRef.current) {
       tetrisAudioRef.current.pause();
       tetrisAudioRef.current.currentTime = 0;
@@ -200,42 +258,94 @@ export const Controller = (): PropsView => {
   };
   // #endregion
 
-  //#region Función de intervalo
+  //#region Lock delay
+  const cancelLockTimer = () => {
+    if (lockTimerRef.current) {
+      clearTimeout(lockTimerRef.current);
+      lockTimerRef.current = null;
+    }
+  };
+
+  const scheduleLockTimer = () => {
+    if (lockTimerRef.current) return;
+    lockTimerRef.current = setTimeout(() => {
+      lockTimerRef.current = null;
+      lockResetsRef.current = 0;
+      // Lock at the current position with current shape
+      lockCurrentPiece();
+    }, LOCK_DELAY_MS);
+  };
+
+  // Call after every successful piece movement/rotation/spawn
+  // to keep lock-delay consistent with grounded state.
+  const updateLockDelay = (pos: { x: number; y: number }, shape: number[][] | null, fromMove: boolean) => {
+    if (!shape) return;
+    const grounded = checkCollision({ x: pos.x, y: pos.y + 1 }, shape);
+    if (grounded) {
+      if (lockTimerRef.current) {
+        // Already armed — moving while grounded resets timer up to MAX_LOCK_RESETS.
+        if (fromMove) {
+          if (lockResetsRef.current >= MAX_LOCK_RESETS) {
+            // Force lock now
+            cancelLockTimer();
+            lockCurrentPiece();
+            return;
+          }
+          lockResetsRef.current++;
+          cancelLockTimer();
+          scheduleLockTimer();
+        }
+      } else {
+        lockResetsRef.current = 0;
+        scheduleLockTimer();
+      }
+    } else {
+      cancelLockTimer();
+      lockResetsRef.current = 0;
+    }
+  };
+
+  const lockCurrentPiece = () => {
+    const shape = currentShapeRef.current;
+    const pos = positionRef.current;
+    if (!shape || gameOverRef.current) return;
+    fixShapeToBoard(pos, shape);
+    if (!gameOverRef.current) spawnShape(nextShapeRef.current!);
+  };
+  //#endregion
+
+  //#region Game timers
   function useInterval(callback: () => void, delay: number | null) {
     const savedCallback = useRef<() => void>();
-
-    // Guardar la última versión de la función de callback.
-    useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
-
-    // Configurar el intervalo.
+    useEffect(() => { savedCallback.current = callback; }, [callback]);
     useEffect(() => {
       if (delay !== null) {
-        const id = setInterval(() => {
-          if (savedCallback.current) {
-            savedCallback.current();
-          }
-        }, delay);
+        const id = setInterval(() => { savedCallback.current?.(); }, delay);
         return () => clearInterval(id);
       }
     }, [delay]);
   }
 
+  // Gravity tick: try y+1; if blocked, leave to lock-delay; if free, move + refresh lock state.
   useInterval(
     () => {
-      if (isPlaying && !notificationGameOver) {
-        const newPosition = { ...position, y: position.y + 1 };
-
-        if (checkCollision(newPosition)) {
-          fixShapeToBoard(position);
-          generateCurrentShape(nextShape!);
-        } else {
-          setPosition(newPosition);
+      if (!isPlaying || notificationGameOver) return;
+      const shape = currentShapeRef.current;
+      const pos = positionRef.current;
+      if (!shape) return;
+      const newPos = { ...pos, y: pos.y + 1 };
+      if (checkCollision(newPos, shape)) {
+        // Grounded — arm lock if not yet armed (no reset since this is gravity, not player move)
+        if (!lockTimerRef.current) {
+          lockResetsRef.current = 0;
+          scheduleLockTimer();
         }
+      } else {
+        setPosition(newPos);
+        updateLockDelay(newPos, shape, false);
       }
     },
-    isPlaying && !notificationGameOver ? 500 : null,
+    isPlaying && !notificationGameOver ? gravityMs : null,
   );
 
   useEffect(() => {
@@ -244,146 +354,293 @@ export const Controller = (): PropsView => {
       return () => clearInterval(timer);
     }
   }, [isPlaying, notificationGameOver]);
+  //#endregion
+
+  //#region Keyboard handling — DAS/ARR + soft drop hold + actions
+  const cancelDasArr = useCallback(() => {
+    if (dasTimerRef.current) { clearTimeout(dasTimerRef.current); dasTimerRef.current = null; }
+    if (arrIntervalRef.current) { clearInterval(arrIntervalRef.current); arrIntervalRef.current = null; }
+    heldDirRef.current = null;
+  }, []);
+
+  const cancelSoftDrop = useCallback(() => {
+    if (softDropIntervalRef.current) { clearInterval(softDropIntervalRef.current); softDropIntervalRef.current = null; }
+  }, []);
+
+  const startHorizontalRepeat = useCallback((dir: number) => {
+    if (heldDirRef.current === dir) return;
+    cancelDasArr();
+    heldDirRef.current = dir;
+    moveShape(dir);
+    dasTimerRef.current = setTimeout(() => {
+      arrIntervalRef.current = setInterval(() => {
+        moveShape(dir);
+      }, ARR_INTERVAL_MS);
+    }, DAS_DELAY_MS);
+  }, [cancelDasArr]);
+
+  const startSoftDropRepeat = useCallback(() => {
+    if (softDropIntervalRef.current) return;
+    softDrop();
+    softDropIntervalRef.current = setInterval(() => {
+      softDrop();
+    }, SOFT_DROP_INTERVAL_MS);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isPlaying || notificationGameOver) return;
+      // Always block scroll on game keys regardless of state to avoid surprises
+      const blockScrollKeys = ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' ', 'Space'];
+      if (blockScrollKeys.includes(event.key)) event.preventDefault();
 
-      // Block browser scroll/back-forward when game owns the arrow keys + space.
-      const gameKeys = ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' ', 'Space'];
-      if (gameKeys.includes(event.key)) {
-        event.preventDefault();
+      // Restart / Stop work even on game over
+      if (event.key === 'Escape') {
+        stopGame();
+        return;
       }
+      if (!isPlayingRef.current || gameOverRef.current) {
+        if (event.key.toLowerCase() === 'p' && !gameOverRef.current) togglePauseResumeGame();
+        return;
+      }
+
+      // Repeat-suppress: ignore native auto-repeat for our own DAS/ARR
+      if (event.repeat) return;
 
       switch (event.key) {
         case 'ArrowLeft':
-          moveShape(-1);
+        case 'a':
+        case 'A':
+          startHorizontalRepeat(-1);
           break;
         case 'ArrowRight':
-          moveShape(1);
+        case 'd':
+        case 'D':
+          startHorizontalRepeat(1);
           break;
         case 'ArrowDown':
-          dropShape();
+        case 's':
+        case 'S':
+          startSoftDropRepeat();
           break;
         case 'ArrowUp':
+        case 'w':
+        case 'W':
           rotateShape();
+          break;
+        case ' ':
+        case 'Space':
+        case 'Spacebar':
+          hardDrop();
+          break;
+        case 'c':
+        case 'C':
+          holdPiece();
+          break;
+        case 'p':
+        case 'P':
+          togglePauseResumeGame();
           break;
         default:
           break;
       }
     };
-    // passive:false required so preventDefault actually blocks scroll
-    window.addEventListener('keydown', handleKeyDown, { passive: false });
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPlaying, notificationGameOver, currentShape, position]);
 
+    const handleKeyUp = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          if (heldDirRef.current === -1) cancelDasArr();
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+          if (heldDirRef.current === 1) cancelDasArr();
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+          cancelSoftDrop();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+    // Stable handler — refs read live state, so deps only callbacks
+  }, [startHorizontalRepeat, startSoftDropRepeat, cancelDasArr, cancelSoftDrop]);
   //#endregion
 
-  //#region Game
+  //#region Game core
   const generateRandomShape = (): number[][] => {
     const randomShape = PIECE_SHAPES[Math.floor(Math.random() * PIECE_SHAPES.length)];
     return randomShape;
   };
 
-  const generateCurrentShape = (shape: number[][]) => {
+  const spawnShape = (shape: number[][]) => {
     const initialPosition = { x: Math.floor(BOARD_WIDTH / 2) - 1, y: 0 };
-
     if (checkCollision(initialPosition, shape)) {
-      if (isPlaying) stopGame();
+      if (isPlayingRef.current) stopGame();
       return;
     }
-
     setCurrentShape(shape);
+    currentShapeRef.current = shape;
     const newNextShape = generateRandomShape();
     setNextShape(newNextShape);
+    nextShapeRef.current = newNextShape;
     setPosition(initialPosition);
+    positionRef.current = initialPosition;
+    holdUsedRef.current = false;
+    cancelLockTimer();
+    lockResetsRef.current = 0;
+    // Spawning at top is normally not grounded, but check just in case
+    updateLockDelay(initialPosition, shape, false);
   };
 
-  const checkCollision = (newPosition: { x: number; y: number }, shape = currentShape) => {
-    if (!shape) return false; // No hay colisión si no hay forma actual
-
+  const checkCollision = (
+    newPosition: { x: number; y: number },
+    shape: number[][] | null = currentShapeRef.current,
+    activeBoard: number[][] = boardRef.current,
+  ) => {
+    if (!shape) return false;
     for (let row = 0; row < shape.length; row++) {
       for (let col = 0; col < shape[row].length; col++) {
         if (shape[row][col]) {
           const newY = newPosition.y + row;
           const newX = newPosition.x + col;
-
           if (
-            newY >= BOARD_HEIGHT || // Límite inferior del tablero
-            newX < 0 || // Límite izquierdo del tablero
-            newX >= BOARD_WIDTH || // Límite derecho del tablero
-            (newY >= 0 && board[newY]?.[newX] !== 0) // Colisión con otra pieza
+            newY >= BOARD_HEIGHT ||
+            newX < 0 ||
+            newX >= BOARD_WIDTH ||
+            (newY >= 0 && activeBoard[newY]?.[newX] !== 0)
           ) {
             return true;
           }
         }
       }
     }
-
-    return false; // No hay colisión
+    return false;
   };
 
   const moveShape = (direction: number) => {
-    const newPosition = { ...position, x: position.x + direction };
-
-    if (!checkCollision(newPosition)) {
+    const pos = positionRef.current;
+    const shape = currentShapeRef.current;
+    if (!shape) return;
+    const newPosition = { ...pos, x: pos.x + direction };
+    if (!checkCollision(newPosition, shape)) {
       setPosition(newPosition);
+      positionRef.current = newPosition;
+      updateLockDelay(newPosition, shape, true);
     }
   };
 
   const rotateShape = () => {
-    if (!currentShape) return;
-
-    const rotatedShape = currentShape[0].map((_, index) => currentShape.map((row) => row[index]).reverse());
-
-    if (!checkCollision(position, rotatedShape)) {
-      setCurrentShape(rotatedShape);
+    const shape = currentShapeRef.current;
+    const pos = positionRef.current;
+    if (!shape) return;
+    const rotated = shape[0].map((_, index) => shape.map((row) => row[index]).reverse());
+    // Wall-kick: try 0, ±1, ±2 horizontal nudge
+    const offsets = [0, -1, 1, -2, 2];
+    for (const dx of offsets) {
+      const tryPos = { x: pos.x + dx, y: pos.y };
+      if (!checkCollision(tryPos, rotated)) {
+        setCurrentShape(rotated);
+        currentShapeRef.current = rotated;
+        if (dx !== 0) {
+          setPosition(tryPos);
+          positionRef.current = tryPos;
+        }
+        updateLockDelay(tryPos, rotated, true);
+        return;
+      }
     }
   };
 
-  const dropShape = () => {
-    let newY = position.y;
+  const softDrop = () => {
+    const pos = positionRef.current;
+    const shape = currentShapeRef.current;
+    if (!shape) return;
+    const newPosition = { ...pos, y: pos.y + 1 };
+    if (!checkCollision(newPosition, shape)) {
+      setPosition(newPosition);
+      positionRef.current = newPosition;
+      setScore((s) => s + 1);
+      updateLockDelay(newPosition, shape, false);
+    } else {
+      // Grounded — arm lock if not yet armed
+      if (!lockTimerRef.current) {
+        lockResetsRef.current = 0;
+        scheduleLockTimer();
+      }
+    }
+  };
 
-    while (!checkCollision({ x: position.x, y: newY + 1 })) {
+  const hardDrop = () => {
+    const pos = positionRef.current;
+    const shape = currentShapeRef.current;
+    if (!shape) return;
+    let newY = pos.y;
+    let cells = 0;
+    while (!checkCollision({ x: pos.x, y: newY + 1 }, shape)) {
       newY++;
+      cells++;
     }
+    setScore((s) => s + cells * 2);
+    cancelLockTimer();
+    fixShapeToBoard({ x: pos.x, y: newY }, shape);
+    if (!gameOverRef.current) spawnShape(nextShapeRef.current!);
+  };
 
-    setPosition({ x: position.x, y: newY });
-    fixShapeToBoard({ x: position.x, y: newY });
+  // Public dropShape (button & legacy callers) → hard drop
+  const dropShape = () => hardDrop();
 
-    // Ahora, luego de colocar la pieza, llamamos a generateCurrentShape()
-    // solamente aquí (o en la lógica del intervalo, pero no en ambos lugares).
-    if (!notificationGameOver) {
-      generateCurrentShape(nextShape!);
+  const holdPiece = () => {
+    if (holdUsedRef.current) return;
+    const shape = currentShapeRef.current;
+    if (!shape) return;
+    holdUsedRef.current = true;
+    cancelLockTimer();
+    if (holdShape === null) {
+      setHoldShape(shape);
+      spawnShape(nextShapeRef.current!);
+      holdUsedRef.current = true; // re-flag, spawnShape resets it
+    } else {
+      const incoming = holdShape;
+      setHoldShape(shape);
+      spawnShape(incoming);
+      holdUsedRef.current = true; // re-flag
     }
   };
 
-  const fixShapeToBoard = (position: { x: number; y: number }) => {
-    if (!currentShape) return;
-    const newBoard = board.map((row) => [...row]);
-
-    currentShape.forEach((row, rowIndex) => {
+  const fixShapeToBoard = (pos: { x: number; y: number }, shape: number[][] | null = currentShapeRef.current) => {
+    if (!shape) return;
+    const newBoard = boardRef.current.map((row) => [...row]);
+    shape.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {
         if (value) {
-          const y = position.y + rowIndex;
-          const x = position.x + colIndex;
+          const y = pos.y + rowIndex;
+          const x = pos.x + colIndex;
           if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
             newBoard[y][x] = value;
           }
         }
       });
     });
-
     setBoard(newBoard);
+    boardRef.current = newBoard;
 
-    if (!notificationGameOver) {
+    if (!gameOverRef.current) {
       if (collisionAudioRef.current) {
         collisionAudioRef.current.currentTime = 0;
         collisionAudioRef.current.play();
       }
       clearFullRows(newBoard);
-      // Quitar aquí la llamada a generateCurrentShape(nextShape!)
-      // Ya no la llamamos aquí.
     }
   };
 
@@ -394,48 +651,37 @@ export const Controller = (): PropsView => {
         fullRows.push(y);
       }
     }
-
-    if (fullRows.length === 0) {
-      return; // No hay filas completas
-    }
-
-    // Marcamos las filas a limpiar para la animación
+    if (fullRows.length === 0) return;
     setRowsToClear(fullRows);
 
-    // Asignar puntos según el número de filas eliminadas a la vez
     const linesCleared = fullRows.length;
-    let points = 0;
-    switch (linesCleared) {
-      case 1:
-        points = 100;
-        break;
-      case 2:
-        points = 300;
-        break;
-      case 3:
-        points = 600;
-        break;
-      case 4:
-        points = 1000;
-        break;
-      default:
-        points = 1000 * linesCleared;
-        break;
-    }
+    const baseTable = [0, 100, 300, 600, 1000];
+    const basePoints = baseTable[linesCleared] ?? 1000 * linesCleared;
+    const currentLevel = Math.floor(lines / 10) + 1;
+    const points = basePoints * currentLevel;
 
-    // Esperamos un poco (ej. 500ms) para mostrar el efecto visual antes de eliminar
     setTimeout(() => {
       const clearedBoard = newBoard.filter((_, rowIndex) => !fullRows.includes(rowIndex));
       const updatedBoard = [...Array.from({ length: linesCleared }, () => Array(BOARD_WIDTH).fill(0)), ...clearedBoard];
-
       setBoard(updatedBoard);
+      boardRef.current = updatedBoard;
       setScore((prevScore) => prevScore + points);
       setLines((prevLines) => prevLines + linesCleared);
-
-      // Limpiamos el estado de filas a eliminar después de la animación
       setRowsToClear([]);
     }, 100);
   };
+  //#endregion
+
+  //#region Ghost piece (translucent landing preview)
+  const computeGhostY = (): number | null => {
+    const pos = position;
+    const shape = currentShape;
+    if (!shape) return null;
+    let y = pos.y;
+    while (!checkCollision({ x: pos.x, y: y + 1 }, shape, board)) y++;
+    return y === pos.y ? null : y;
+  };
+  const ghostY = computeGhostY();
   //#endregion
 
   //#region EXPORT
@@ -456,6 +702,10 @@ export const Controller = (): PropsView => {
     restartGame,
     notificationGameOver,
     nextShape,
+    holdShape,
+    holdPiece,
+    ghostY,
+    level,
     score,
     onChangeNotificationGameOver,
     lines,

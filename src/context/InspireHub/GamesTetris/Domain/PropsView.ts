@@ -17,6 +17,10 @@ export interface PropsView {
   restartGame: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLButtonElement>) => void;
   notificationGameOver: boolean;
   nextShape: number[][] | null;
+  holdShape: number[][] | null;
+  holdPiece: () => void;
+  ghostY: number | null;
+  level: number;
   onChangeNotificationGameOver: (value: boolean) => void;
   lines: number;
   timeElapsed: number;

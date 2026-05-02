@@ -54,7 +54,7 @@ export const View = (props: PropsView) => {
           <Col xs={24} sm={24} md={18}>
             <Row>
               <div className="tetris-board-container">
-                <TetrisBoard board={props.board} currentShape={props.currentShape} position={props.position} rowsToClear={props.rowsToClear} />
+                <TetrisBoard board={props.board} currentShape={props.currentShape} position={props.position} ghostY={props.ghostY} rowsToClear={props.rowsToClear} />
               </div>
             </Row>
 
@@ -80,7 +80,7 @@ export const View = (props: PropsView) => {
                     props.dropShape();
                   }}
                   className="control-move-button"
-                  title="Drop Down (S key)"
+                  title="Hard Drop (Space)"
                 >
                   <FontAwesomeIcon icon={faArrowDown} />
                 </Button>
@@ -164,8 +164,15 @@ export const View = (props: PropsView) => {
             </Row>
 
             <Row>
+              <Panel bordered header="Hold (C)" className="next-shape-panel">
+                <NextPiecePreview shape={props.holdShape} />
+              </Panel>
+            </Row>
+
+            <Row>
               <Panel bordered header="Stats" className="stats-panel">
                 <p>Score: {props.score}</p>
+                <p>Level: {props.level}</p>
                 <p>Lines: {props.lines}</p>
                 <p>Time: {props.timeElapsed}s</p>
               </Panel>
@@ -181,12 +188,13 @@ export const View = (props: PropsView) => {
               <div className="instructions-panel">
                 <h6>Keyboard Controls:</h6>
                 <div className="instructions-grid">
-                  <span><strong>W</strong> - Rotate</span>
-                  <span><strong>A</strong> - Move Left</span>
-                  <span><strong>S</strong> - Drop Down</span>
-                  <span><strong>D</strong> - Move Right</span>
-                  <span><strong>Space</strong> - Pause/Resume</span>
-                  <span><strong>R</strong> - Restart</span>
+                  <span><strong>← / A</strong> - Move Left (hold = repeat)</span>
+                  <span><strong>→ / D</strong> - Move Right (hold = repeat)</span>
+                  <span><strong>↑ / W</strong> - Rotate (with wall-kick)</span>
+                  <span><strong>↓ / S</strong> - Soft Drop (hold = faster)</span>
+                  <span><strong>Space</strong> - Hard Drop</span>
+                  <span><strong>C</strong> - Hold Piece</span>
+                  <span><strong>P</strong> - Pause / Resume</span>
                   <span><strong>Esc</strong> - Stop Game</span>
                 </div>
               </div>
