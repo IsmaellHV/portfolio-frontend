@@ -21,7 +21,7 @@ export const Recaptcha = ({ onChangeRecaptcha }: Props) => {
       onVerify={onChangeRecaptcha}
       size={isScreen_480 ? 'compact' : 'flexible'}
       appearance="interaction-only"
-      action="login"
+      action="submit"
       theme={themeLight ? 'light' : 'dark'}
       language={language.code}
     />
