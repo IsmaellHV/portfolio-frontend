@@ -108,8 +108,6 @@ export const Controller = (): PropsView => {
 
       dispatch(addLoading('Loading...'));
       const resp: IResponseServiceCreateShortLink = await new UseCaseCreateShortLink(repository).exec({ originalLink: encodeURIComponent(formCreateShortLink.values.link), captcha: encodeURIComponent(recaptcha) });
-      turnstile.reset();
-      onChangeRecaptcha('');
       setShortURL(resp.shortLink);
       setOriginalURL(resp.originalLink);
       dispatch(removeLoading());
@@ -117,9 +115,14 @@ export const Controller = (): PropsView => {
     } catch (error) {
       dispatch(removeLoading());
       AdapterGeneric.createToast({ message: (error as Error).message, icon: 'error' });
-      // alert((error as Error).message, { okButtonText: 'Ok' });
-      // AdapterGeneric.createMessage('Alerta', (error as Error).message, 'warning', false);
     } finally {
+      // Reset Turnstile on every attempt — tokens are single-use.
+      try {
+        turnstile?.reset();
+      } catch {
+        /* noop */
+      }
+      onChangeRecaptcha('');
       setIsSubmitting(false);
     }
   };

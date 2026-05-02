@@ -79,8 +79,6 @@ export const Controller = (): PropsView => {
       });
       dispatch(signIn({ user }));
 
-      turnstile.reset();
-      onChangeRecaptcha('');
       AdapterGeneric.createToast({ message: 'Bienvenido', icon: 'success' });
       formLogin.resetForm();
       dispatch(removeLoading());
@@ -88,6 +86,14 @@ export const Controller = (): PropsView => {
       dispatch(removeLoading());
       AdapterGeneric.createToast({ message: (error as Error).message, icon: 'error' });
     } finally {
+      // Always reset Turnstile — tokens are single-use, so a failed attempt
+      // must request a fresh one before the next retry.
+      try {
+        turnstile?.reset();
+      } catch {
+        /* noop */
+      }
+      onChangeRecaptcha('');
       setIsSubmitting(false);
     }
   };
