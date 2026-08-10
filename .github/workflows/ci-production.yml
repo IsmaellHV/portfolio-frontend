@@ -1,13 +1,20 @@
-name: DEPLOY-PRODUCTION
+name: CI-PRODUCTION
 
 on:
   push:
     branches:
       - production
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout the repository
